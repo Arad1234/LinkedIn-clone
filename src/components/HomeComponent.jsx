@@ -1,5 +1,5 @@
 import React from "react";
-import PostStatus from "./common/PostUpdate";
+import PostStatus from "./common/PostUpload";
 const HomeComponent = () => {
   return (
     <div className="home-component">

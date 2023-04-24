@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LoginAPI, GoogleSingInAPI } from "../api/AuthAPI";
+import { LoginAPI, GoogleSingInAPI } from "../api/AuthAPIs";
 import linkedinLogo from "../assets/linkedinLogo.png";
 import GoogleButton from "react-google-button";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ const LoginComponent = () => {
       const res = await LoginAPI(credentials.email, credentials.password);
       toast.success("Signed In to LinkedIn!");
       navigate("/home");
+      localStorage.setItem("userEmail", res.user.email); // Storing the user's email in order to access it later when he posts or perform some operation.
     } catch (error) {
       toast.error("Please Check your Credentials");
     }

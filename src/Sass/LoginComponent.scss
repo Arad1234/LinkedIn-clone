@@ -7,7 +7,7 @@ body {
   padding: 0;
 }
 .login-wrapper {
-  background-color: white;
+  background-color: white !important;
   height: 100vh;
   .login-wrapper-inner {
     display: flex;
@@ -16,13 +16,11 @@ body {
     align-items: center;
   }
   .heading {
-    padding-right: 12rem;
     font-family: system-ui;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.9);
   }
   .sub-heading {
-    padding-right: 5px;
     margin-top: -20px;
     font-family: system-ui;
   }

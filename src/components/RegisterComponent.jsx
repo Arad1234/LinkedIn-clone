@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RegisterAPI, GoogleSingInAPI } from "../api/AuthAPI";
+import { RegisterAPI, GoogleSingInAPI } from "../api/AuthAPIs";
 import linkedinLogo from "../assets/linkedinLogo.png";
 import GoogleButton from "react-google-button";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ const RegisterComponent = () => {
       const res = await RegisterAPI(credentials.email, credentials.password);
       toast.success("Account Created Successfully!");
       navigate("/home");
+      localStorage.setItem("userEmail", res.user.email); // Storing the user's email in order to access it later when he posts or perform some operation.
     } catch (error) {
       toast.error("Cannot Create your Account");
     }
