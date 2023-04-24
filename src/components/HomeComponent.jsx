@@ -1,9 +1,9 @@
 import React from "react";
-
+import PostStatus from "./common/PostUpdate";
 const HomeComponent = () => {
   return (
-    <div>
-      <h1>HomeComponent</h1>
+    <div className="home-component">
+      <PostStatus />
     </div>
   );
 };

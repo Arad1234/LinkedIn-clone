@@ -9,11 +9,17 @@ import {
   AiOutlineBell,
 } from "react-icons/ai";
 import { BsBriefcase } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import userIcon from "../../../assets/user.png";
 
 const Topbar = () => {
+  const navigate = useNavigate();
+  const goToRoute = (route) => {
+    navigate(route);
+  };
   return (
     <div className="topbar-main">
+      {/* Topbar icons */}
       <img
         className="linkedin-logo"
         src={LinkedinLogo}
@@ -27,10 +33,12 @@ const Topbar = () => {
         <AiOutlineHome
           size={30}
           className="react-icon"
+          onClick={() => goToRoute("/home")}
         />
         <AiOutlineUserSwitch
           size={30}
           className="react-icon"
+          onClick={() => goToRoute("/profile")}
         />
         <BsBriefcase
           size={30}
@@ -49,6 +57,7 @@ const Topbar = () => {
           src={userIcon}
           alt="userIcon"
         />
+        {/* Topbar icons */}
       </div>
     </div>
   );
