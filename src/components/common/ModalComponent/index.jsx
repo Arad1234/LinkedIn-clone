@@ -4,14 +4,16 @@ import { Modal, Button } from "antd";
 import "./index.scss";
 const ModalComponent = (props) => {
   const { setStatus, status, showModal, setShowModal, createPost } = props;
-
+  const clearModal = () => {
+    setShowModal(false);
+    setStatus("");
+  };
   return (
     <div>
       <Modal
         title="Create a post"
         open={showModal}
-        onOk={() => setShowModal(false)}
-        onCancel={() => setShowModal(false)}
+        onCancel={clearModal}
         footer={[
           <Button
             onClick={createPost}

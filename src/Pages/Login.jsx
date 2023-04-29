@@ -18,7 +18,7 @@ const Login = () => {
         setLoading(false); //// Show login page
       }
     });
-  });
+  }, []);
   return !loading ? <LoginComponent /> : <Loader />;
 };
 

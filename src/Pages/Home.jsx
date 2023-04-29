@@ -7,18 +7,18 @@ import Loader from "../components/common/Loader";
 const Home = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
+    // A built in function that is being automatically called when the user authentication state is changing in real time.
     onAuthStateChanged(auth, (res) => {
-      //// If there is not an access token, go back to login page automatically before even rendering the home page.
+      // If there is no access token, go back to login page automatically before even rendering the home page.
       if (!res?.accessToken) {
         navigate("/login");
       } else {
-        setLoading(false); //// Show home page
+        setLoading(false); // Show home page
       }
     });
-  });
-  return !loading ? <HomeComponent /> : <Loader />;
+  }, []);
+  return loading ? <Loader /> : <HomeComponent />;
 };
 
 export default Home;

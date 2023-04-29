@@ -2,6 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&family=Pathway+Extreme:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("./components/common/Loader/index.scss"); /// I changed to 'index.scss' file in order to import it.
 
+$linkedinBlue1: #0072b1;
+$linkedinBlue2: #0073b1;
+$linkedinBlue3: #004182;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -9,11 +13,29 @@
 
   color-scheme: light dark;
   color: #212121;
-  background-color:  rgba(224, 224, 224);
+  background-color: rgba(224, 224, 224);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+// Moved those styles from 'LoginComponent.scss' to make them global styles that can be access from anywhere in the app.
+.common-input {
+  height: 30px;
+  padding: 10px;
+  background-color: white;
+  outline: none;
+  border: 1px solid #212121;
+  border-radius: 3px;
+  font-family: system-ui;
+  font-size: 16px;
+}
+.common-input:focus {
+  outline: 1px solid $linkedinBlue1;
+}
+::placeholder {
+  font-family: system-ui;
+  font-size: 16px;
 }

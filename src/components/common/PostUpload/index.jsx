@@ -1,7 +1,9 @@
-import React, { useState, useMemo } from "react";
-import ModalComponent from "../Modal";
+import React, { useState, useContext, useEffect, useMemo } from "react";
+import ModalComponent from "../ModalComponent";
 import { toast } from "react-toastify";
 import PostsCard from "../PostsCard";
+import { userContext } from "../../../layouts/HomeLayout";
+import { getUniqueID } from "../../../helpers/getUniqueID";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import { postStatus, getPosts } from "../../../api/FirestoreAPIs";
 
@@ -11,18 +13,21 @@ const PostStatus = () => {
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState("");
   const [allPosts, setAllPosts] = useState([]);
+  // Using the useContext hook to retrieve the current user from the 'HomeLayout' component.
+  const currentUser = useContext(userContext);
 
-  const userEmail = localStorage.getItem("userEmail"); // Getting the user's email from the local storage. I stored the email when the user is registered or signed in.
-  // Create a new post - add a new document to the DB.
+  // Create a new post - adds a new document to the 'posts' collection.
   const createPost = async () => {
     const postData = {
       status: status,
       timeStamp: getCurrentTimeStamp("LLL"),
-      userEmail: userEmail,
+      userEmail: currentUser.email,
+      name: currentUser.name,
+      postID: getUniqueID(),
     };
     try {
       const res = await postStatus(postData); // Creates a new post with the firestore API that I designed.
-      toast.success("Created a New Post!");
+      toast.success("Post has been added successfully");
       setShowModal(false); // Setting the modal to disappear
       setStatus(""); // setting the status inside the modal to be an empty string.
     } catch (error) {
@@ -30,7 +35,7 @@ const PostStatus = () => {
     }
   };
   // Getting all the posts with the "getPosts" function from the firestore API file.
-  useMemo(() => {
+  useEffect(() => {
     getPosts(setAllPosts);
   }, []);
 
@@ -55,7 +60,7 @@ const PostStatus = () => {
       <div>
         {allPosts.map((post) => {
           return (
-            <div key={post.id}>
+            <div key={post.postID}>
               <PostsCard post={post} />
             </div>
           );

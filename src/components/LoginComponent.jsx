@@ -16,16 +16,16 @@ const LoginComponent = () => {
       //// Because the 'LoginAPI is a promise, we assing the 'await' keyword before it.
       const res = await LoginAPI(credentials.email, credentials.password);
       toast.success("Signed In to LinkedIn!");
-      navigate("/home");
       localStorage.setItem("userEmail", res.user.email); // Storing the user's email in order to access it later when he posts or perform some operation.
+      navigate("/home");
     } catch (error) {
       toast.error("Please Check your Credentials");
     }
   };
   const googleSingIn = async () => {
     try {
-      //// Because the 'GoogleSingInAPI is a promise, we assing the 'await' keyword before it.
-      let res = await GoogleSingInAPI();
+      //// Because the 'GoogleSingInAPI()' is a promise, we assing the 'await' keyword before it.
+      const res = await GoogleSingInAPI();
       toast.success("Signed In With Google!");
       navigate("/home");
     } catch (error) {
@@ -66,7 +66,6 @@ const LoginComponent = () => {
         >
           Sign in
         </button>
-        {/* <button onClick={register}>Register to Linkedin</button> */}
       </div>
       <hr
         className="hr-text"

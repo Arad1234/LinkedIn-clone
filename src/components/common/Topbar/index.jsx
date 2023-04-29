@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./index.scss";
+import ProfilePopup from "../ProfilePopup";
 import LinkedinLogo from "../../../assets/linkedinLogo.png";
 import {
   AiOutlineHome,
@@ -14,6 +15,7 @@ import userIcon from "../../../assets/user.png";
 
 const Topbar = () => {
   const navigate = useNavigate();
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const goToRoute = (route) => {
     navigate(route);
   };
@@ -53,11 +55,12 @@ const Topbar = () => {
           className="react-icon"
         />
         <img
+          onClick={() => setShowLogoutPopup(!showLogoutPopup)}
           className="user-logo"
           src={userIcon}
           alt="userIcon"
         />
-        {/* Topbar icons */}
+        {showLogoutPopup ? <ProfilePopup /> : null} {/* Topbar icons */}
       </div>
     </div>
   );

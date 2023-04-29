@@ -18,5 +18,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const firestore = getFirestore(app); //// Creates a firestore instance that we can use to interact with out DB.
+
+const firestore = getFirestore(app); //// Creates a firestore instance that I can use to interact with the DB.
 export { auth, app, firestore };
