@@ -40,7 +40,7 @@ const Topbar = () => {
         <AiOutlineUserSwitch
           size={30}
           className="react-icon"
-          onClick={() => goToRoute("/profile")}
+          // onClick={() => goToRoute("/profile")}
         />
         <BsBriefcase
           size={30}
@@ -60,7 +60,12 @@ const Topbar = () => {
           src={userIcon}
           alt="userIcon"
         />
-        {showLogoutPopup ? <ProfilePopup /> : null} {/* Topbar icons */}
+        {showLogoutPopup ? (
+          <div className="popup-position">
+            <ProfilePopup />
+          </div>
+        ) : null}
+        {/* Topbar icons */}
       </div>
     </div>
   );

@@ -9,7 +9,6 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     onAuthStateChanged(auth, (res) => {
-      console.log("start");
       if (!res?.accessToken) {
         navitage("/login");
       } else {

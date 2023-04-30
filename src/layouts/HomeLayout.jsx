@@ -15,8 +15,8 @@ const HomeLayout = () => {
 
   return (
     <div>
-      <Topbar />
       <userContext.Provider value={currentUser}>
+        <Topbar />
         <Home />
       </userContext.Provider>
     </div>

@@ -10,7 +10,6 @@ const ProfileLayout = () => {
   useEffect(() => {
     getCurrentUser(setCurrentUser);
   }, []);
-  console.log(currentUser);
   return (
     <div>
       <Topbar />

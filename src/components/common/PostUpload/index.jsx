@@ -15,7 +15,7 @@ const PostStatus = () => {
   const [allPosts, setAllPosts] = useState([]);
   // Using the useContext hook to retrieve the current user from the 'HomeLayout' component.
   const currentUser = useContext(userContext);
-
+  console.log(currentUser);
   // Create a new post - adds a new document to the 'posts' collection.
   const createPost = async () => {
     const postData = {
@@ -24,6 +24,7 @@ const PostStatus = () => {
       userEmail: currentUser.email,
       name: currentUser.name,
       postID: getUniqueID(),
+      userID: currentUser.id, // Here I add the userId to know which user upload that specific post.
     };
     try {
       const res = await postStatus(postData); // Creates a new post with the firestore API that I designed.

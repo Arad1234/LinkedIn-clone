@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { editProfile } from "../../../api/FirestoreAPIs";
+import { AiOutlineClose } from "react-icons/ai";
 import { userCtx } from "../../../layouts/ProfileLayout";
 import "./index.scss";
 
 const ProfileEdit = (props) => {
   const { onEdit } = props;
   const currentUser = useContext(userCtx);
-  const [editInputs, setEditInputs] = useState({});
+  const [editInputs, setEditInputs] = useState(currentUser); // Setting the 'editInputs' to be equal to the 'currentUser' as initial value.
   const getInput = (event) => {
     const { name, value } = event.target;
     const inputObj = { [name]: value };
@@ -15,45 +16,93 @@ const ProfileEdit = (props) => {
     setEditInputs({ ...editInputs, ...inputObj });
   };
 
-  const updateProfileData = () => {
+  const updateProfileData = async () => {
     // Calling the 'editProfile' function from the firestore API file, to update a specific document from the 'users' collection.
-    editProfile(currentUser.userID, editInputs);
+    editProfile(currentUser.id, editInputs);
+    onEdit(); // Going back to the profile page.
   };
   return (
     <div className="profile-card">
       <div className="edit-btn">
-        <button onClick={onEdit}>Go back</button>
+        <AiOutlineClose
+          className="close-icon"
+          size={20}
+          onClick={onEdit}
+        />
       </div>
       <div className="profile-edit-inputs">
+        <label>Full name</label>
         <input
           onChange={getInput}
           className="common-input"
-          placeholder="Name"
           name="name"
+          value={editInputs.name}
         />
+        <label>Headline</label>
         <input
           onChange={getInput}
           className="common-input"
-          placeholder="Headline"
           name="headline"
+          value={editInputs.headline}
         />
+        <label>Country</label>
         <input
           onChange={getInput}
           className="common-input"
-          placeholder="Location"
-          name="location"
+          name="country"
+          value={editInputs.country}
         />
+        <label>City</label>
         <input
           onChange={getInput}
           className="common-input"
-          placeholder="Company"
+          name="city"
+          value={editInputs.city}
+        />
+        <label>Company</label>
+        <input
+          onChange={getInput}
+          className="common-input"
           name="company"
+          value={editInputs.company}
         />
+        <label>Industry</label>
         <input
           onChange={getInput}
           className="common-input"
-          placeholder="College"
+          name="industry"
+          value={editInputs.industry}
+        />
+        <label>College</label>
+        <input
+          onChange={getInput}
+          className="common-input"
           name="college"
+          value={editInputs.college}
+        />
+        <label>Website</label>
+        <input
+          type="url"
+          onChange={getInput}
+          className="common-input"
+          name="website"
+          value={editInputs.website}
+        />
+        <label>About</label>
+        <textarea
+          onChange={getInput}
+          className="common-textArea"
+          name="about"
+          placeholder="Tell us about yourself..."
+          rows={5}
+          value={editInputs.about}
+        />
+        <label>Skills</label>
+        <input
+          onChange={getInput}
+          className="common-input"
+          name="skills"
+          value={editInputs.skills}
         />
       </div>
       <div className="save-container">

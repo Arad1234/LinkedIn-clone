@@ -1,14 +1,28 @@
 .popup-card {
   border: 1px solid #a8a8a8;
   width: 200px;
-  height: auto;
+  height: 100px;
   background-color: whitesmoke;
   border-radius: 5px;
   display: flex;
   justify-content: center;
-  flex-direction: column;
   padding: 20px;
-  .popup-option {
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  .name {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.9);
+    line-height: 24px;
+    font-family: system-ui;
+    margin-top: -7px;
+  }
+  .headline {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.9);
+    line-height: 20px;
+    font-family: system-ui;
+    margin-top: -15px;
   }
 }
