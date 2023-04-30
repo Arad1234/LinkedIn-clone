@@ -15,7 +15,6 @@ const PostStatus = () => {
   const [allPosts, setAllPosts] = useState([]);
   // Using the useContext hook to retrieve the current user from the 'HomeLayout' component.
   const currentUser = useContext(userContext);
-  console.log(currentUser);
   // Create a new post - adds a new document to the 'posts' collection.
   const createPost = async () => {
     const postData = {

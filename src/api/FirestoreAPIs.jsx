@@ -11,12 +11,15 @@ import {
   query,
   where,
   orderBy,
+  setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 // Creates a reference to a specific collection in the DB.
 // If the collection does not exists, when I first insert a document, it will be created automatically.
 const postsRef = collection(firestore, "posts");
 const usersRef = collection(firestore, "users");
+const likesRef = collection(firestore, "likes");
 
 export const postStatus = (postData) => {
   // addDoc returns a promise (response = promise). Here I add a new document to the "posts" collection.
@@ -52,14 +55,14 @@ export const getSingleUserPosts = (setAllPosts, id) => {
 };
 
 // Getting a specific user by his email adress.
-export const getSingleUser = (setCurrentUser, email) => {
+export const getSingleUser = (setCurrentProfile, email) => {
   const getUserQuery = query(usersRef, where("email", "==", email)); // I compare the email from the 'users' collection with the 'userEmail' from the posts collection.
 
   onSnapshot(getUserQuery, (res) => {
     const singleUser = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     })[0]; // Accessing the single user that matches the query.
-    setCurrentUser(singleUser);
+    setCurrentProfile(singleUser);
   });
 };
 // Adding new user to the 'users' collection.
@@ -79,7 +82,7 @@ export const getCurrentUser = (setCurrentUser) => {
     setCurrentUser(
       res.docs
         .map((doc) => {
-          // Here I overwrite the 'userID' property to be the auto generated ID of firebase in order to access the current user later in the app with this id.
+          // Here I add the auto generated 'id' that firebase provided.
           return { ...doc.data(), id: doc.id }; // Getting all users
         })
         .filter((user) => {
@@ -100,4 +103,40 @@ export const editProfile = (userID, updatedData) => {
       console.log(err);
       toast.error("Could not update profile");
     });
+};
+
+// Here I check if the user already liked the post, if he did, I delete his document from the "likes" collection, else, I add him.
+export const likePost = async (userId, postId, likedPost) => {
+  try {
+    const likedPostRef = doc(likesRef, `${userId}_${postId}`); // Creating a refernce to a document that does not exists and give it the 'id' of "postId_userId".
+
+    if (!likedPost) {
+      await setDoc(likedPostRef, { userId, postId }); // Here I set a new "like" to the "likes" collection with the 'id' that I created.
+    } else {
+      await deleteDoc(likedPostRef); // Delete the document from the "likes" collection.
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Getting the number of likes (users who liked) for each post.
+// For example, if I have 3 users that liked a specific post, the "likes" collection
+// will have an addition of 3 documents, then I can find those documents with a query and find the length of the array.
+// The length of the array is equal to the number of users that liked this post.
+// It will be the same if one user liked 3 different posts.
+export const getLikesByUser = (
+  userId,
+  postId,
+  setNumberOfLikesPerPost,
+  setLikedPost
+) => {
+  const likedPostQuery = query(likesRef, where("postId", "==", postId)); // Find the specifc post.
+  onSnapshot(likedPostQuery, (res) => {
+    const usersWhoLiked = res.docs.map((doc) => doc.data());
+    const usersCount = usersWhoLiked.length;
+    const isLiked = usersWhoLiked.some((doc) => doc.userId === userId); // Checking if the current user already like the post. Then using the result in the "handleLike" function.
+    setLikedPost(isLiked);
+    setNumberOfLikesPerPost(usersCount); // Using setState to update the count in the page.
+  });
 };

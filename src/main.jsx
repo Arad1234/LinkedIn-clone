@@ -6,8 +6,11 @@ import { router } from "./Routes/index.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <>
     <RouterProvider router={router} />
     <ToastContainer />
-  </React.StrictMode>
+  </>
+
+  // </React.StrictMode>
 );

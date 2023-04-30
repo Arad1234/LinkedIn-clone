@@ -16,10 +16,11 @@ const ProfileCard = (props) => {
   const [currentProfile, setCurrentProfile] = useState({});
   // I'm using setState inside the useEffect so it will not enter an infinite loop.
   useEffect(() => {
-    // I'm using 'email' and 'id' because I want to distinguish between if the user enter his own profile, or if he entered someone's else.
+    // I'm using 'email' and 'id' because I want to distinguish between if the user enter his own profile, or if he entered someone's else through the posts.
     if (location?.state?.email) {
       getSingleUser(setCurrentProfile, location.state.email);
     }
+    // Getting the posts of the user that I'm in his profile page.
     if (location?.state?.id) {
       getSingleUserPosts(setAllPosts, location.state.id);
     }

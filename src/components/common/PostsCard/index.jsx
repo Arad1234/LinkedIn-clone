@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { userContext } from "../../../layouts/HomeLayout";
 import LikeButton from "../LikeButton";
 import "./index.scss";
 const PostsCard = (props) => {
+  const currentUser = useContext(userContext);
   const { post } = props;
   const navigate = useNavigate();
   return (
@@ -19,7 +21,10 @@ const PostsCard = (props) => {
       </p>
       <p className="timestamp">{post.timeStamp}</p>
       <p className="status">{post.status}</p>
-      <LikeButton />
+      <LikeButton
+        userId={currentUser.id} // I added the 'id' property when I found who is the current user (firestore API file).
+        postId={post.id} // Accessing the built in 'id' that firebase provided to this post.
+      />
     </div>
   );
 };
