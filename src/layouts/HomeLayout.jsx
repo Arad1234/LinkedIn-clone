@@ -3,7 +3,7 @@ import Home from "../Pages/Home";
 import Topbar from "../components/common/Topbar";
 import { getCurrentUser } from "../api/FirestoreAPIs";
 // Using context to prevent props drilling until I get to 'PostStatus' component.
-export const userContext = createContext({});
+export const homeUserContext = createContext({});
 
 const HomeLayout = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -15,10 +15,10 @@ const HomeLayout = () => {
 
   return (
     <div>
-      <userContext.Provider value={currentUser}>
+      <homeUserContext.Provider value={currentUser}>
         <Topbar />
         <Home />
-      </userContext.Provider>
+      </homeUserContext.Provider>
     </div>
   );
 };

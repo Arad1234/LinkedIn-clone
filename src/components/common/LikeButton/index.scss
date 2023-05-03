@@ -21,21 +21,63 @@
       border-top: 1px solid rgb(213, 212, 212);
     }
   }
-  .likes-inner {
-    display: flex;
-    align-items: center;
-    margin-top: -20px;
-    .blue {
-      color: #0a66c2;
+  .like-comment-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; // Defines the width of each column in the available space, "fr" means fraction.
+    .likes-comment-inner {
+      display: flex;
+      align-items: center;
+      margin-top: -20px;
+      .blue {
+        color: #0a66c2;
+      }
+      .black {
+        color: rgba(0, 0, 0, 0.6);
+      }
+      p {
+        font-family: system-ui;
+        font-size: 16px;
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.784);
+      }
     }
-    .black {
-      color: rgba(0, 0, 0, 0.6);
+  }
+  // Accessing a specific "input" element with this placeholder attribute.
+  input[placeholder="Add a comment..."] {
+    border-radius: 30px;
+    padding: 13px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    background-color: whitesmoke;
+    color: rgba(0, 0, 0, 0.9);
+    // Accessing the input text stylings.
+    font-size: 14px;
+    font-weight: 400;
+    font-family: system-ui;
+
+    &:focus {
+      outline: 1px solid rgba(0, 0, 0, 0.3);
     }
-    p {
-      font-family: system-ui;
-      font-size: 16px;
-      font-weight: 400;
+    &::placeholder {
       color: rgba(0, 0, 0, 0.6);
+      font-size: 14px;
+    }
+  }
+
+  .add-comment-btn {
+    width: 60px;
+    height: 27px;
+    background-color: #0a66c2;
+    border-radius: 30px;
+    color: rgba(255, 255, 255, 0.92);
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: system-ui;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    &:hover {
+      background-color: #004182;
     }
   }
 }

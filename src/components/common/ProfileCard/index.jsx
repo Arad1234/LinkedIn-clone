@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import PostsCard from "../PostsCard";
-import { HiOutlinePencil } from "react-icons/hi";
+import { BiPencil } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
-import { userCtx } from "../../../layouts/ProfileLayout";
+import { profileUserContext } from "../../../layouts/ProfileLayout";
 import { getSingleUser, getSingleUserPosts } from "../../../api/FirestoreAPIs";
 import "./index.scss";
 
 const ProfileCard = (props) => {
   const { onEdit } = props;
-  const currentUser = useContext(userCtx);
+  const currentUser = useContext(profileUserContext);
   // With the useLocation hook I can check what profile to render in accordance to what the user clicked.
   const location = useLocation();
   // Using the state object passed from the 'navigate' instance that located in 'PostsCard' folder.
@@ -29,13 +29,18 @@ const ProfileCard = (props) => {
   return (
     <>
       <div className="profile-card">
-        <div className="edit-btn">
-          <HiOutlinePencil
-            size={20}
-            className="edit-icon"
-            onClick={onEdit}
-          />
-        </div>
+        {/* Checking if the user entered his own profile. If he does, he can edit, else, unshow the pencil icon */}
+        {!location?.state?.email ||
+        location?.state?.email === currentUser.email ? (
+          <div className="edit-btn">
+            <BiPencil
+              size={23}
+              className="edit-icon"
+              onClick={onEdit}
+            />
+          </div>
+        ) : null}
+
         <div className="profile-info">
           <div>
             <h4 className="userName">

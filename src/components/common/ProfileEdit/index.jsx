@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import { editProfile } from "../../../api/FirestoreAPIs";
 import { AiOutlineClose } from "react-icons/ai";
-import { userCtx } from "../../../layouts/ProfileLayout";
+import { profileUserContext } from "../../../layouts/ProfileLayout";
 import "./index.scss";
 
 const ProfileEdit = (props) => {
   const { onEdit } = props;
-  const currentUser = useContext(userCtx);
+  const currentUser = useContext(profileUserContext);
   const [editInputs, setEditInputs] = useState(currentUser); // Setting the 'editInputs' to be equal to the 'currentUser' as initial value.
   const getInput = (event) => {
     const { name, value } = event.target;
@@ -26,7 +26,7 @@ const ProfileEdit = (props) => {
       <div className="edit-btn">
         <AiOutlineClose
           className="close-icon"
-          size={20}
+          size={23}
           onClick={onEdit}
         />
       </div>

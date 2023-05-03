@@ -1,0 +1,30 @@
+.comment-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgb(225, 225, 225);
+  border-radius: 10px;
+  position: relative;
+  margin: 10px;
+  .comment-username {
+    margin-top: 3px;
+    margin-left: 10px;
+    color: #212121;
+    font-family: system-ui;
+    font-size: 14px;
+    font-weight: 600;
+    &:hover {
+      color: #0a66c2;
+      text-decoration: underline;
+    }
+  }
+  .comment {
+    margin-left: 10px;
+    margin-top: 0px;
+  }
+  .timestamp {
+    position: absolute; // the .comment-container element becomes the closest positioned ancestor for the .timestamp element. this is because he is with position: relative.
+    right: 10px;
+    top: 5px;
+  }
+}

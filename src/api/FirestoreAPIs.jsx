@@ -13,6 +13,7 @@ import {
   orderBy,
   setDoc,
   deleteDoc,
+  and,
 } from "firebase/firestore";
 
 // Creates a reference to a specific collection in the DB.
@@ -20,6 +21,7 @@ import {
 const postsRef = collection(firestore, "posts");
 const usersRef = collection(firestore, "users");
 const likesRef = collection(firestore, "likes");
+const commentsRef = collection(firestore, "comments");
 
 export const postStatus = (postData) => {
   // addDoc returns a promise (response = promise). Here I add a new document to the "posts" collection.
@@ -107,6 +109,9 @@ export const editProfile = (userID, updatedData) => {
 
 // Here I check if the user already liked the post, if he did, I delete his document from the "likes" collection, else, I add him.
 export const likePost = async (userId, postId, likedPost) => {
+  console.log(userId);
+  console.log(postId);
+
   try {
     const likedPostRef = doc(likesRef, `${userId}_${postId}`); // Creating a refernce to a document that does not exists and give it the 'id' of "postId_userId".
 
@@ -135,8 +140,27 @@ export const getLikesByUser = (
   onSnapshot(likedPostQuery, (res) => {
     const usersWhoLiked = res.docs.map((doc) => doc.data());
     const usersCount = usersWhoLiked.length;
-    const isLiked = usersWhoLiked.some((doc) => doc.userId === userId); // Checking if the current user already like the post. Then using the result in the "handleLike" function.
+    const isLiked = usersWhoLiked.some((doc) => doc.userId === userId); // Checking if the current user already like the post. Then using the result in the "handleLike" function that is located in the "LikeButton" folder.
     setLikedPost(isLiked);
     setNumberOfLikesPerPost(usersCount); // Using setState to update the count in the page.
+  });
+};
+
+// Add new comment to the "comments" collection
+// Transferring the promise to the "postComment" funtion call - handling the errors there.
+export const postComment = (postId, userName, comment, timeStamp) => {
+  const res = addDoc(commentsRef, { postId, userName, comment, timeStamp });
+  return res;
+};
+
+// Getting the number of comments for each post.
+export const getComments = (postId, setAllComments) => {
+  const singlePostQuery = query(commentsRef, where("postId", "==", postId));
+
+  onSnapshot(singlePostQuery, (res) => {
+    const comments = res.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() }; // Spreading the doc.data() to retrieve the fields separately.
+    });
+    setAllComments(comments);
   });
 };

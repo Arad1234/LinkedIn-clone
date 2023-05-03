@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { userContext } from "../../../layouts/HomeLayout";
+import { homeUserContext } from "../../../layouts/HomeLayout";
 import { onLogout } from "../../../api/AuthAPIs";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import "./index.scss";
 const ProfilePopup = () => {
   const navigate = useNavigate();
-  const currentUser = useContext(userContext);
+  const currentUser = useContext(homeUserContext);
   return (
     <div className="popup-card">
       <p className="name">{currentUser.name}</p>

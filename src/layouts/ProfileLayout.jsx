@@ -3,7 +3,7 @@ import Profile from "../Pages/Profile";
 import { getCurrentUser } from "../api/FirestoreAPIs";
 import Topbar from "../components/common/Topbar";
 
-export const userCtx = createContext({});
+export const profileUserContext = createContext({});
 
 const ProfileLayout = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -13,9 +13,9 @@ const ProfileLayout = () => {
   return (
     <div>
       <Topbar />
-      <userCtx.Provider value={currentUser}>
+      <profileUserContext.Provider value={currentUser}>
         <Profile />
-      </userCtx.Provider>
+      </profileUserContext.Provider>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useMemo } from "react";
 import ModalComponent from "../ModalComponent";
 import { toast } from "react-toastify";
 import PostsCard from "../PostsCard";
-import { userContext } from "../../../layouts/HomeLayout";
+import { homeUserContext } from "../../../layouts/HomeLayout";
 import { getUniqueID } from "../../../helpers/getUniqueID";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import { postStatus, getPosts } from "../../../api/FirestoreAPIs";
@@ -14,7 +14,7 @@ const PostStatus = () => {
   const [status, setStatus] = useState("");
   const [allPosts, setAllPosts] = useState([]);
   // Using the useContext hook to retrieve the current user from the 'HomeLayout' component.
-  const currentUser = useContext(userContext);
+  const currentUser = useContext(homeUserContext);
   // Create a new post - adds a new document to the 'posts' collection.
   const createPost = async () => {
     const postData = {
