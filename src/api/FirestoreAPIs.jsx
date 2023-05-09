@@ -37,35 +37,39 @@ export const getPosts = async (setAllPosts) => {
   // NOTE - It will be called automatically without the need to call the "getPosts()" function. This is a built in feature in firebase.
   // This is why the useEffect only needs to executes once.
   const allPostQuery = query(postsRef, orderBy("timeStamp"));
-  onSnapshot(allPostQuery, (res) => {
+  const closeSocketConnection = onSnapshot(allPostQuery, (res) => {
     const postsArray = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
     setAllPosts(postsArray); // allPosts objects will contain an addition 'id' property.
   });
+  return closeSocketConnection;
 };
 
 // Getting all the posts for a specific user in order to see his posts in his profile page.
 export const getSingleUserPosts = (setAllPosts, id) => {
   const getPostsQuery = query(postsRef, where("userID", "==", id)); // Getting all the posts that their 'userEmail' is equal to the post's 'userEmail' that the user has pressed.
-  onSnapshot(getPostsQuery, (res) => {
+  const closeSocketConnection = onSnapshot(getPostsQuery, (res) => {
     const postsArray = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
     setAllPosts(postsArray);
   });
+  return closeSocketConnection;
 };
 
 // Getting a specific user by his email adress.
 export const getSingleUser = (setCurrentProfile, email) => {
   const getUserQuery = query(usersRef, where("email", "==", email)); // I compare the email from the 'users' collection with the 'userEmail' from the posts collection.
 
-  onSnapshot(getUserQuery, (res) => {
+  const closeSocketConnection = onSnapshot(getUserQuery, (res) => {
     const singleUser = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     })[0]; // Accessing the single user that matches the query.
     setCurrentProfile(singleUser);
   });
+
+  return closeSocketConnection;
 };
 // Adding new user to the 'users' collection.
 export const postUserData = (userDataObject) => {
@@ -80,7 +84,7 @@ export const postUserData = (userDataObject) => {
 export const getCurrentUser = (setCurrentUser) => {
   // I retrieve all the users from the "users" collection and filter them until I find the current user.
   // The proccess using a combination of "map" and "filter" functions returns an array with 1 item so I'm accessing index 0.
-  onSnapshot(usersRef, (res) => {
+  const closeSocketConnection = onSnapshot(usersRef, (res) => {
     setCurrentUser(
       res.docs
         .map((doc) => {
@@ -92,6 +96,7 @@ export const getCurrentUser = (setCurrentUser) => {
         })[0]
     );
   });
+  return closeSocketConnection;
 };
 
 // Edit the profile page (update the document).
@@ -137,13 +142,14 @@ export const getLikesByUser = (
   setLikedPost
 ) => {
   const likedPostQuery = query(likesRef, where("postId", "==", postId)); // Find the specifc post.
-  onSnapshot(likedPostQuery, (res) => {
+  const closeSocketConnection = onSnapshot(likedPostQuery, (res) => {
     const usersWhoLiked = res.docs.map((doc) => doc.data());
     const usersCount = usersWhoLiked.length;
     const isLiked = usersWhoLiked.some((doc) => doc.userId === userId); // Checking if the current user already like the post. Then using the result in the "handleLike" function that is located in the "LikeButton" folder.
     setLikedPost(isLiked);
     setNumberOfLikesPerPost(usersCount); // Using setState to update the count in the page.
   });
+  return closeSocketConnection;
 };
 
 // Add new comment to the "comments" collection
@@ -157,10 +163,11 @@ export const postComment = (postId, userName, comment, timeStamp) => {
 export const getComments = (postId, setAllComments) => {
   const singlePostQuery = query(commentsRef, where("postId", "==", postId));
 
-  onSnapshot(singlePostQuery, (res) => {
+  const closeSocketConnection = onSnapshot(singlePostQuery, (res) => {
     const comments = res.docs.map((doc) => {
       return { id: doc.id, ...doc.data() }; // Spreading the doc.data() to retrieve the fields separately.
     });
     setAllComments(comments);
   });
+  return closeSocketConnection;
 };

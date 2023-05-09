@@ -52,13 +52,18 @@ const LikeButton = (props) => {
   // This is because this component will be rendered "allPosts.length" times.
   // I'm using useEffect because I have setState inside of it.
   useEffect(() => {
-    getLikesByUser(
+    const closeLikesConnection = getLikesByUser(
       currentUser.id,
       postId,
       setNumberOfLikesPerPost,
       setLikedPost
     ); // Getting the number of likes for each post.
-    getComments(postId, setAllComments); // Getting all the comments per post.
+    const closeCommentsConnection = getComments(postId, setAllComments); // Getting all the comments per post.
+    return () => {
+      // Returning the onSnapshot function so I can close the webSocket connection when the component is unmounted.
+      closeCommentsConnection();
+      closeLikesConnection();
+    };
   }, []);
 
   return (

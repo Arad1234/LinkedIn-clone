@@ -11,11 +11,11 @@ const Login = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (res) => {
-      //// If there is an access token, go to home page automatically before even rendering the login page.
+      // If there is an access token, go to home page automatically before even rendering the login page.
       if (res?.accessToken) {
         navigate("/home");
       } else {
-        setLoading(false); //// Show login page
+        setLoading(false); // Show login page
       }
     });
   }, []);

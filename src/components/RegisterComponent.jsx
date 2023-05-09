@@ -9,13 +9,13 @@ import { toast } from "react-toastify";
 import { getUniqueID } from "../helpers/getUniqueID";
 
 const RegisterComponent = () => {
-  //// Using the "navigate" object instead of the "history" object to navigate between different URLs.
+  // Using the "navigate" object instead of the "history" object to navigate between different URLs.
   const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({});
   const register = async () => {
     try {
-      //// Because the 'RegisterAPI is a promise, we assing the 'await' keyword before it.
+      // Because the 'RegisterAPI is a promise, we assing the 'await' keyword before it.
       const res = await RegisterAPI(credentials.email, credentials.password);
       toast.success("Account Created Successfully!");
       // Add a new user to the 'users' collection.
@@ -32,7 +32,7 @@ const RegisterComponent = () => {
   };
   const googleSingIn = async () => {
     try {
-      //// Because the 'GoogleSingInAPI is a promise, we assing the 'await' keyword before it.
+      // Because the 'GoogleSingInAPI is a promise, we assing the 'await' keyword before it.
       let res = await GoogleSingInAPI();
       toast.success("Signed In With Google!");
       navigate("/home");
@@ -96,7 +96,7 @@ const RegisterComponent = () => {
           Already on LinkedIn?{" "}
           <span
             className="join-now"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/")}
           >
             Sign in
           </span>

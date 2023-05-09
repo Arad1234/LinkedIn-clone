@@ -3,21 +3,17 @@ import ProfileComponent from "../components/ProfileComponent";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import Loader from "../components/common/Loader";
 const Profile = () => {
   const navitage = useNavigate();
-  const [loading, setLoading] = useState(true);
   useEffect(() => {
     onAuthStateChanged(auth, (res) => {
       if (!res?.accessToken) {
-        navitage("/login");
-      } else {
-        setLoading(false);
+        navitage("/");
       }
     });
   }, []);
 
-  return loading ? <Loader /> : <ProfileComponent />;
+  return <ProfileComponent />;
 };
 
 export default Profile;

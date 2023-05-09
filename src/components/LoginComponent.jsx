@@ -7,13 +7,13 @@ import "../Sass/LoginComponent.scss";
 import { toast } from "react-toastify";
 
 const LoginComponent = () => {
-  //// Using the "navigate" object instead of the "history" object to navigate between different URLs.
+  // Using the "navigate" object instead of the "history" object to navigate between different URLs.
   let navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({});
   const login = async () => {
     try {
-      //// Because the 'LoginAPI is a promise, we assing the 'await' keyword before it.
+      // Because the 'LoginAPI is a promise, we assing the 'await' keyword before it.
       const res = await LoginAPI(credentials.email, credentials.password);
       toast.success("Signed In to LinkedIn!");
       localStorage.setItem("userEmail", res.user.email); // Storing the user's email in order to access it later when he posts or perform some operation.
@@ -24,7 +24,7 @@ const LoginComponent = () => {
   };
   const googleSingIn = async () => {
     try {
-      //// Because the 'GoogleSingInAPI()' is a promise, we assing the 'await' keyword before it.
+      // Because the 'GoogleSingInAPI()' is a promise, we assing the 'await' keyword before it.
       const res = await GoogleSingInAPI();
       toast.success("Signed In With Google!");
       navigate("/home");

@@ -8,7 +8,12 @@ export const profileUserContext = createContext({});
 const ProfileLayout = () => {
   const [currentUser, setCurrentUser] = useState({});
   useEffect(() => {
-    getCurrentUser(setCurrentUser);
+    const closeConnection = getCurrentUser(setCurrentUser);
+
+    return () => {
+      // Close the webSocket connection when the component is unmounted.
+      closeConnection();
+    };
   }, []);
   return (
     <div>

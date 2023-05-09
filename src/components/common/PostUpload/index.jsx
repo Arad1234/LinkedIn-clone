@@ -36,7 +36,10 @@ const PostStatus = () => {
   };
   // Getting all the posts with the "getPosts" function from the firestore API file.
   useEffect(() => {
-    getPosts(setAllPosts);
+    const closeConnection = getPosts(setAllPosts);
+    return () => {
+      closeConnection();
+    };
   }, []);
 
   return (

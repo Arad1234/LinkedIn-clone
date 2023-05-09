@@ -10,7 +10,11 @@ const HomeLayout = () => {
   // This useEffect will be executed every time someone visits the "/home" url, although it have an empty deps array.
   // Every time someone register or login to the website, this useEffect will be triggered.
   useEffect(() => {
-    getCurrentUser(setCurrentUser);
+    const closeConnection = getCurrentUser(setCurrentUser);
+    return () => {
+      // Closing the webSocket connection by returning the onSnapshot function - firebase built in feature.
+      closeConnection();
+    };
   }, []);
 
   return (
