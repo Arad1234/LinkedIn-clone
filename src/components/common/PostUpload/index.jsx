@@ -26,7 +26,7 @@ const PostStatus = () => {
       userID: currentUser.id, // Here I add the userId to know which user upload that specific post.
     };
     try {
-      const res = await postStatus(postData); // Creates a new post with the firestore API that I designed.
+      await postStatus(postData); // Creates a new post with the firestore API that I designed.
       toast.success("Post has been added successfully");
       setShowModal(false); // Setting the modal to disappear
       setStatus(""); // setting the status inside the modal to be an empty string.

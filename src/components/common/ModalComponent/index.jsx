@@ -16,7 +16,7 @@ const ModalComponent = (props) => {
         onCancel={clearModal}
         footer={[
           <Button
-            onClick={createPost}
+            onClick={createPost} // Calling the function at the parent component
             key="submit"
             type="primary"
             disabled={!status.length} // If there is a text, the "disabled" property is set to false.

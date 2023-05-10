@@ -31,6 +31,7 @@ const LikeButton = (props) => {
   const [likedPost, setLikedPost] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [numberOfLikesPerPost, setNumberOfLikesPerPost] = useState(0);
+
   const handleShowComments = () => {
     setShowComments(!showComments);
   };
@@ -50,17 +51,17 @@ const LikeButton = (props) => {
   };
   // This useEffect will executes the number of posts that is currently in the "allPosts" array.
   // This is because this component will be rendered "allPosts.length" times.
-  // I'm using useEffect because I have setState inside of it.
   useEffect(() => {
+    // Getting the number of likes for each post.
     const closeLikesConnection = getLikesByUser(
       currentUser.id,
       postId,
       setNumberOfLikesPerPost,
       setLikedPost
-    ); // Getting the number of likes for each post.
+    );
     const closeCommentsConnection = getComments(postId, setAllComments); // Getting all the comments per post.
     return () => {
-      // Returning the onSnapshot function so I can close the webSocket connection when the component is unmounted.
+      // Returning the onSnapshot function so I can close the webSocket connection when the component is unmounts.
       closeCommentsConnection();
       closeLikesConnection();
     };

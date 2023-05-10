@@ -24,14 +24,14 @@ const likesRef = collection(firestore, "likes");
 const commentsRef = collection(firestore, "comments");
 
 export const postStatus = (postData) => {
-  // addDoc returns a promise (response = promise). Here I add a new document to the "posts" collection.
+  // addDoc returns a promise (response = promise<pending>). Here I add a new document to the "posts" collection.
   const response = addDoc(postsRef, postData);
   return response;
 };
 
 // Retrieving data from firestore "posts" collection.
 // Using setState as the function param to change the state in "PostUpdate" component.
-export const getPosts = async (setAllPosts) => {
+export const getPosts = (setAllPosts) => {
   // Using the "onSnapshot" function to get real time updates whenever one of the documents that matches the query changes.
   // The "onSnapShot" function is being called whenever I add/delete/change a document to the firestore collection.
   // NOTE - It will be called automatically without the need to call the "getPosts()" function. This is a built in feature in firebase.
@@ -41,7 +41,7 @@ export const getPosts = async (setAllPosts) => {
     const postsArray = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
-    setAllPosts(postsArray); // allPosts objects will contain an addition 'id' property.
+    setAllPosts(postsArray); // allPosts objects will contain an additional 'id' property.
   });
   return closeSocketConnection;
 };
@@ -83,12 +83,12 @@ export const postUserData = (userDataObject) => {
 // Passing setState as a function param to find the current user that logged in.
 export const getCurrentUser = (setCurrentUser) => {
   // I retrieve all the users from the "users" collection and filter them until I find the current user.
-  // The proccess using a combination of "map" and "filter" functions returns an array with 1 item so I'm accessing index 0.
+  // The proccess using a combination of "map" and "filter" functions returns an array with 1 item so I retrieve the item at index 0.
   const closeSocketConnection = onSnapshot(usersRef, (res) => {
     setCurrentUser(
       res.docs
         .map((doc) => {
-          // Here I add the auto generated 'id' that firebase provided.
+          // Here I add the auto generated 'id' that firebase provides.
           return { ...doc.data(), id: doc.id }; // Getting all users
         })
         .filter((user) => {
@@ -114,15 +114,14 @@ export const editProfile = (userID, updatedData) => {
 
 // Here I check if the user already liked the post, if he did, I delete his document from the "likes" collection, else, I add him.
 export const likePost = async (userId, postId, likedPost) => {
-  console.log(userId);
-  console.log(postId);
-
   try {
     const likedPostRef = doc(likesRef, `${userId}_${postId}`); // Creating a refernce to a document that does not exists and give it the 'id' of "postId_userId".
-
+    console.log(likedPost);
     if (!likedPost) {
+      // This line automatically calls the onSnapshot in the "getLikesByUser" endpoint.
       await setDoc(likedPostRef, { userId, postId }); // Here I set a new "like" to the "likes" collection with the 'id' that I created.
     } else {
+      // This line automatically calls the onSnapshot in the "getLikesByUser" endpoint.
       await deleteDoc(likedPostRef); // Delete the document from the "likes" collection.
     }
   } catch (error) {
@@ -147,7 +146,7 @@ export const getLikesByUser = (
     const usersCount = usersWhoLiked.length;
     const isLiked = usersWhoLiked.some((doc) => doc.userId === userId); // Checking if the current user already like the post. Then using the result in the "handleLike" function that is located in the "LikeButton" folder.
     setLikedPost(isLiked);
-    setNumberOfLikesPerPost(usersCount); // Using setState to update the count in the page.
+    setNumberOfLikesPerPost(usersCount); // Using setState to update the likes count in the page.
   });
   return closeSocketConnection;
 };
@@ -155,6 +154,7 @@ export const getLikesByUser = (
 // Add new comment to the "comments" collection
 // Transferring the promise to the "postComment" funtion call - handling the errors there.
 export const postComment = (postId, userName, comment, timeStamp) => {
+  // This line calls the onSnapshot in the "getComments" endpoint.
   const res = addDoc(commentsRef, { postId, userName, comment, timeStamp });
   return res;
 };

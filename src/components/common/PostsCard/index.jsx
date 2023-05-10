@@ -6,7 +6,6 @@ import "./index.scss";
 const PostsCard = (props) => {
   // const currentUser = useContext(userContext);
   const { post } = props;
-  console.log(post);
   const navigate = useNavigate();
   return (
     <div className="posts-card">

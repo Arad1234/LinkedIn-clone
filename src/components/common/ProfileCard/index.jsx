@@ -9,7 +9,7 @@ import "./index.scss";
 const ProfileCard = (props) => {
   const { onEdit } = props;
   const currentUser = useContext(profileUserContext);
-  // With the useLocation hook I can check what profile to render in accordance to what the user clicked.
+  // With the useLocation hook I can check what profile to render according to what the user clicked.
   const location = useLocation();
   // Using the state object passed from the 'navigate' instance that located in 'PostsCard' folder.
   const [allPosts, setAllPosts] = useState([]);
@@ -18,14 +18,14 @@ const ProfileCard = (props) => {
   useEffect(() => {
     // I'm using 'email' and 'id' because I want to distinguish between if the user enter his own profile, or if he entered someone's else through the posts.
     if (location?.state?.email) {
-      const closeUserConnection = getSingleUser(
+      var closeUserConnection = getSingleUser(
         setCurrentProfile,
         location.state.email
       );
     }
     // Getting the posts of the user that I'm in his profile page.
     if (location?.state?.id) {
-      const closePostsConnection = getSingleUserPosts(
+      var closePostsConnection = getSingleUserPosts(
         setAllPosts,
         location.state.id
       );

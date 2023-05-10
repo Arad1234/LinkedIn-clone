@@ -7,12 +7,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC5ryj2eqzBI2Ji6MdfkqwxB8VHEQz_hJg",
-  authDomain: "linkedin-clone-e72cc.firebaseapp.com",
-  projectId: "linkedin-clone-e72cc",
-  storageBucket: "linkedin-clone-e72cc.appspot.com",
-  messagingSenderId: "1015836878977",
-  appId: "1:1015836878977:web:d304caafa497bf2a854580",
+  apiKey: import.meta.env.VITE_APP_API_KEY,
+  authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_APP_ID,
 };
 
 // Initialize Firebase

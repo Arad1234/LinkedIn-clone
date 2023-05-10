@@ -16,7 +16,7 @@ const LoginComponent = () => {
       // Because the 'LoginAPI is a promise, we assing the 'await' keyword before it.
       const res = await LoginAPI(credentials.email, credentials.password);
       toast.success("Signed In to LinkedIn!");
-      localStorage.setItem("userEmail", res.user.email); // Storing the user's email in order to access it later when he posts or perform some operation.
+      localStorage.setItem("userEmail", res.user.email); // Storing the user's email in order to access it for identify the current user later when he posts or perform some operation.
       navigate("/home");
     } catch (error) {
       toast.error("Please Check your Credentials");
