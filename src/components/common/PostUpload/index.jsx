@@ -23,7 +23,7 @@ const PostStatus = () => {
       userEmail: currentUser.email,
       name: currentUser.name,
       postID: getUniqueID(),
-      userID: currentUser.id, // Here I add the userId to know which user upload that specific post.
+      userID: currentUser.userID, // Here I add the userId to know which user upload that specific post.
     };
     try {
       await postStatus(postData); // Creates a new post with the firestore API that I designed.

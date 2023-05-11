@@ -59,12 +59,12 @@ export const getSingleUserPosts = (setAllPosts, id) => {
 };
 
 // Getting a specific user by his email adress.
-export const getSingleUser = (setCurrentProfile, email) => {
-  const getUserQuery = query(usersRef, where("email", "==", email)); // I compare the email from the 'users' collection with the 'userEmail' from the posts collection.
+export const getSingleUser = (setCurrentProfile, id) => {
+  const getUserQuery = query(usersRef, where("userID", "==", id)); // I compare the email from the 'users' collection with the 'userEmail' from the posts collection.
 
   const closeSocketConnection = onSnapshot(getUserQuery, (res) => {
     const singleUser = res.docs.map((doc) => {
-      return { ...doc.data(), id: doc.id };
+      return { ...doc.data() };
     })[0]; // Accessing the single user that matches the query.
     setCurrentProfile(singleUser);
   });
@@ -85,16 +85,16 @@ export const getCurrentUser = (setCurrentUser) => {
   // I retrieve all the users from the "users" collection and filter them until I find the current user.
   // The proccess using a combination of "map" and "filter" functions returns an array with 1 item so I retrieve the item at index 0.
   const closeSocketConnection = onSnapshot(usersRef, (res) => {
-    setCurrentUser(
-      res.docs
-        .map((doc) => {
-          // Here I add the auto generated 'id' that firebase provides.
-          return { ...doc.data(), id: doc.id }; // Getting all users
-        })
-        .filter((user) => {
-          return user.email === localStorage.getItem("userEmail"); // Checking if a user's email from firestore's "users" collection is equal to the current user's email.
-        })[0]
-    );
+    const currentUser = res.docs
+      .map((doc) => {
+        // Here I add the auto generated 'id' that firebase provides.
+        return { ...doc.data(), id: doc.id }; // Getting all users
+      })
+      .filter((user) => {
+        return user.email === localStorage.getItem("userEmail"); // Checking if a user's email from firestore's "users" collection is equal to the current user's email.
+      })[0];
+    console.log(currentUser);
+    setCurrentUser(currentUser);
   });
   return closeSocketConnection;
 };
@@ -102,6 +102,7 @@ export const getCurrentUser = (setCurrentUser) => {
 // Edit the profile page (update the document).
 export const editProfile = (userID, updatedData) => {
   const userToEditRef = doc(usersRef, userID);
+  // Sends a PATCH request (firebase).
   updateDoc(userToEditRef, updatedData)
     .then(() => {
       toast.success("Profile has been updated successfully!");
@@ -113,13 +114,12 @@ export const editProfile = (userID, updatedData) => {
 };
 
 // Here I check if the user already liked the post, if he did, I delete his document from the "likes" collection, else, I add him.
-export const likePost = async (userId, postId, likedPost) => {
+export const likePost = async (userID, postID, likedPost) => {
   try {
-    const likedPostRef = doc(likesRef, `${userId}_${postId}`); // Creating a refernce to a document that does not exists and give it the 'id' of "postId_userId".
-    console.log(likedPost);
+    const likedPostRef = doc(likesRef, `${userID}_${postID}`); // Creating a refernce to a document that does not exists and give it the 'id' of "postId_userId".
     if (!likedPost) {
       // This line automatically calls the onSnapshot in the "getLikesByUser" endpoint.
-      await setDoc(likedPostRef, { userId, postId }); // Here I set a new "like" to the "likes" collection with the 'id' that I created.
+      await setDoc(likedPostRef, { userID, postID }); // Here I set a new "like" to the "likes" collection with the 'id' that I created.
     } else {
       // This line automatically calls the onSnapshot in the "getLikesByUser" endpoint.
       await deleteDoc(likedPostRef); // Delete the document from the "likes" collection.
@@ -140,11 +140,11 @@ export const getLikesByUser = (
   setNumberOfLikesPerPost,
   setLikedPost
 ) => {
-  const likedPostQuery = query(likesRef, where("postId", "==", postId)); // Find the specifc post.
+  const likedPostQuery = query(likesRef, where("postID", "==", postId)); // Find the specifc post.
   const closeSocketConnection = onSnapshot(likedPostQuery, (res) => {
     const usersWhoLiked = res.docs.map((doc) => doc.data());
     const usersCount = usersWhoLiked.length;
-    const isLiked = usersWhoLiked.some((doc) => doc.userId === userId); // Checking if the current user already like the post. Then using the result in the "handleLike" function that is located in the "LikeButton" folder.
+    const isLiked = usersWhoLiked.some((doc) => doc.userID === userId); // Checking if the current user already like the post. Then using the result in the "handleLike" function that is located in the "LikeButton" folder.
     setLikedPost(isLiked);
     setNumberOfLikesPerPost(usersCount); // Using setState to update the likes count in the page.
   });
@@ -153,15 +153,15 @@ export const getLikesByUser = (
 
 // Add new comment to the "comments" collection
 // Transferring the promise to the "postComment" funtion call - handling the errors there.
-export const postComment = (postId, userName, comment, timeStamp) => {
+export const postComment = (postID, userName, comment, timeStamp) => {
   // This line calls the onSnapshot in the "getComments" endpoint.
-  const res = addDoc(commentsRef, { postId, userName, comment, timeStamp });
+  const res = addDoc(commentsRef, { postID, userName, comment, timeStamp });
   return res;
 };
 
 // Getting the number of comments for each post.
-export const getComments = (postId, setAllComments) => {
-  const singlePostQuery = query(commentsRef, where("postId", "==", postId));
+export const getComments = (postID, setAllComments) => {
+  const singlePostQuery = query(commentsRef, where("postID", "==", postID));
 
   const closeSocketConnection = onSnapshot(singlePostQuery, (res) => {
     const comments = res.docs.map((doc) => {

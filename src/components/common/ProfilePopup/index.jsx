@@ -15,7 +15,9 @@ const ProfilePopup = () => {
       <Button
         title="View Profile"
         // Passing 'onClick' as a prop name.
-        onClick={() => navigate("/profile", { state: { id: currentUser.id } })}
+        onClick={() =>
+          navigate("/profile", { state: { id: currentUser.userID } })
+        }
       />
       <Button
         title="Log out"

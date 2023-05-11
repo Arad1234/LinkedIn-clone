@@ -47,21 +47,21 @@ const LikeButton = (props) => {
 
   // When the current user click the like button, it will check if he already liked it.
   const handleLike = () => {
-    likePost(currentUser.id, postId, likedPost);
+    likePost(currentUser.userID, postId, likedPost);
   };
   // This useEffect will executes the number of posts that is currently in the "allPosts" array.
   // This is because this component will be rendered "allPosts.length" times.
   useEffect(() => {
     // Getting the number of likes for each post.
     const closeLikesConnection = getLikesByUser(
-      currentUser.id,
+      currentUser.userID,
       postId,
       setNumberOfLikesPerPost,
       setLikedPost
     );
     const closeCommentsConnection = getComments(postId, setAllComments); // Getting all the comments per post.
     return () => {
-      // Returning the onSnapshot function so I can close the webSocket connection when the component is unmounts.
+      // Returning the onSnapshot function so I can close the webSocket connections when the component is unmounts.
       closeCommentsConnection();
       closeLikesConnection();
     };

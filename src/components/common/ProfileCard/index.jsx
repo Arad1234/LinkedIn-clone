@@ -10,38 +10,33 @@ const ProfileCard = (props) => {
   const { onEdit } = props;
   const currentUser = useContext(profileUserContext);
   // With the useLocation hook I can check what profile to render according to what the user clicked.
-  const location = useLocation();
   // Using the state object passed from the 'navigate' instance that located in 'PostsCard' folder.
+  const location = useLocation();
+
   const [allPosts, setAllPosts] = useState([]);
   const [currentProfile, setCurrentProfile] = useState({});
-  // I'm using setState inside the useEffect so it will not enter an infinite loop.
+
+  // Using useEffect to open the initial websocket connection with firestore.
   useEffect(() => {
-    // I'm using 'email' and 'id' because I want to distinguish between if the user enter his own profile, or if he entered someone's else through the posts.
-    if (location?.state?.email) {
-      var closeUserConnection = getSingleUser(
-        setCurrentProfile,
-        location.state.email
-      );
-    }
+    const closeUserConnection = getSingleUser(
+      setCurrentProfile,
+      location.state.id
+    );
     // Getting the posts of the user that I'm in his profile page.
-    if (location?.state?.id) {
-      var closePostsConnection = getSingleUserPosts(
-        setAllPosts,
-        location.state.id
-      );
-    }
+    const closePostsConnection = getSingleUserPosts(
+      setAllPosts,
+      location.state.id
+    );
     return () => {
       closeUserConnection();
       closePostsConnection();
     };
   }, []);
-
   return (
     <>
       <div className="profile-card">
         {/* Checking if the user entered his own profile. If he does, he can edit, else, unshow the pencil icon */}
-        {!location?.state?.email ||
-        location?.state?.email === currentUser.email ? (
+        {location?.state?.id === currentUser.userID ? (
           <div className="edit-btn">
             <BiPencil
               size={23}
@@ -53,64 +48,33 @@ const ProfileCard = (props) => {
 
         <div className="profile-info">
           <div>
-            <h4 className="userName">
-              {/* Checking the length of the currentProfile values array, to decide if I need to render the 'currentUser' or some other user profile that the user clicked on.*/}
-              {Object.values(currentProfile).length
-                ? currentProfile.name
-                : currentUser.name}
-            </h4>
-            <p className="headline">
-              {Object.values(currentProfile).length
-                ? currentProfile.headline
-                : currentUser.headline}
-            </p>
+            <h4 className="userName">{currentProfile.name}</h4>
+            <p className="headline">{currentProfile.headline}</p>
             <p className="location">
-              {Object.values(currentProfile).length
-                ? `${currentProfile.city}, ${currentProfile.country}`
-                : `${currentUser.city}, ${currentUser.country}`}
+              {`${currentProfile.city}, ${currentProfile.country}`}
             </p>
             {/* I created <a> tag to enter the website of the user. */}
             <a
-              href={
-                Object.values(currentProfile).length
-                  ? currentProfile.website
-                  : currentUser.website
-              }
+              href={currentProfile.website}
               target="_blank" // To open the link in a new tab.
               className="website"
             >
-              {Object.values(currentProfile).length
-                ? currentProfile.website
-                : currentUser.website}
+              {currentProfile.website}
             </a>
             <p className="skills">
               <span className="skill-label">Skills:</span>&nbsp;
-              {Object.values(currentProfile).length
-                ? currentProfile.skills
-                : currentUser.skills}
+              {currentProfile.skills}
             </p>
           </div>
           <div className="right-info">
-            <p className="college">
-              {Object.values(currentProfile).length
-                ? currentProfile.college
-                : currentUser.college}
-            </p>
-            <p className="company">
-              {Object.values(currentProfile).length
-                ? currentProfile.company
-                : currentUser.company}
-            </p>
+            <p className="college">{currentProfile.college}</p>
+            <p className="company">{currentProfile.company}</p>
           </div>
         </div>
       </div>
       <div className="about-card">
         <label>About</label>
-        <p>
-          {Object.values(currentProfile).length
-            ? currentProfile.about
-            : currentUser.about}
-        </p>
+        <p>{currentProfile.about}</p>
       </div>
 
       {/* using 'post-status-main' className from index.scss that located in PostUpload folder */}
