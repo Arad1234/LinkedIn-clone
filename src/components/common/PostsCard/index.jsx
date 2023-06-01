@@ -4,7 +4,6 @@ import LikeButton from "../LikeButton";
 import "./index.scss";
 const PostsCard = (props) => {
   const { post } = props;
-  console.log(post);
   const navigate = useNavigate();
   return (
     <div className="posts-card">
@@ -21,7 +20,7 @@ const PostsCard = (props) => {
       <p className="timestamp">{post.timeStamp}</p>
       <p className="status">{post.status}</p>
       <LikeButton
-        postId={post.postID} // Accessing the built in 'id' that firebase provided to this post.
+        postId={post.postID} // Using the "postID" propery to distinguish between posts..
       />
     </div>
   );

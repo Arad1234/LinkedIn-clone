@@ -1,5 +1,5 @@
 //// That API file handle the requests for both the 'users' and 'posts' collections.
-import { firestore } from "../firebaseConfig";
+import { firestore, storage } from "../firebaseConfig";
 import { toast } from "react-toastify";
 
 import {
@@ -13,8 +13,8 @@ import {
   orderBy,
   setDoc,
   deleteDoc,
-  and,
 } from "firebase/firestore";
+import { getDownloadURL, getMetadata, listAll, ref } from "firebase/storage";
 
 // Creates a reference to a specific collection in the DB.
 // If the collection does not exists, when I first insert a document, it will be created automatically.
@@ -58,9 +58,9 @@ export const getSingleUserPosts = (setAllPosts, id) => {
   return closeSocketConnection;
 };
 
-// Getting a specific user by his email adress.
+// Getting a specific user by his id.
 export const getSingleUser = (setCurrentProfile, id) => {
-  const getUserQuery = query(usersRef, where("userID", "==", id)); // I compare the email from the 'users' collection with the 'userEmail' from the posts collection.
+  const getUserQuery = query(usersRef, where("userID", "==", id)); // I compare the userId from the users collection with the id of the user.
 
   const closeSocketConnection = onSnapshot(getUserQuery, (res) => {
     const singleUser = res.docs.map((doc) => {
@@ -93,7 +93,6 @@ export const getCurrentUser = (setCurrentUser) => {
       .filter((user) => {
         return user.email === localStorage.getItem("userEmail"); // Checking if a user's email from firestore's "users" collection is equal to the current user's email.
       })[0];
-    console.log(currentUser);
     setCurrentUser(currentUser);
   });
   return closeSocketConnection;
@@ -133,7 +132,6 @@ export const likePost = async (userID, postID, likedPost) => {
 // For example, if I have 3 users that liked a specific post, the "likes" collection
 // will have an addition of 3 documents, then I can find those documents with a query and find the length of the array.
 // The length of the array is equal to the number of users that liked this post.
-// It will be the same if one user liked 3 different posts.
 export const getLikesByUser = (
   userId,
   postId,
@@ -170,4 +168,14 @@ export const getComments = (postID, setAllComments) => {
     setAllComments(comments);
   });
   return closeSocketConnection;
+};
+
+export const getProfileImage = (setUrl, setLoading) => {
+  setLoading(true);
+  const profileImageFolderRef = ref(storage, "images/Profile Image.jpeg");
+  getDownloadURL(profileImageFolderRef).then((url) => {
+    setUrl(url);
+    setLoading(false);
+  });
+  return profileImageFolderRef;
 };

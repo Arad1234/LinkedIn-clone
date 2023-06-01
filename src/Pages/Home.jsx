@@ -10,7 +10,7 @@ const Home = () => {
     onAuthStateChanged(auth, (res) => {
       // If there is no access token, go back to login page automatically before even rendering the home page.
       if (!res?.accessToken) {
-        navigate("/");
+        navigate("/login");
       }
     });
   }, []);

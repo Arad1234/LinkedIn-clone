@@ -19,6 +19,49 @@
 
 .profile-card {
   @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative);
+  .image-edit-icons {
+    display: flex;
+    .image-input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0 40px 0;
+      border: 1px solid gray;
+      border-radius: 60px;
+      padding: 10px;
+      width: 100px;
+      height: 100px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      .loader-container {
+        margin-left: 10px;
+      }
+      .change-profile-label {
+        position: absolute;
+        top: 10rem;
+        left: 20px;
+        border: 1px solid gray;
+        padding: 0px 8px 0 5px;
+        border-radius: 10px;
+      }
+      .profile-image {
+        width: 121%;
+        height: 121%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      label {
+        cursor: pointer;
+        font-family: system-ui;
+        font-weight: 600;
+        #inputTag {
+          display: none;
+        }
+      }
+    }
+  }
 
   .profile-info {
     display: flex;
@@ -31,7 +74,6 @@
       font-weight: 600;
     }
     .right-info {
-      margin-top: 25px;
       margin-right: 20px;
       // Applying the same styles for two different className.
       .college,
@@ -40,7 +82,7 @@
         font-weight: 600;
         color: rgba(0, 0, 0, 0.9);
         font-family: system-ui;
-        line-height: 30px;
+        margin-bottom: 30px;
       }
 
       .company {

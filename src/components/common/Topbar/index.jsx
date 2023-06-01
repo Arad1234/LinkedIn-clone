@@ -10,12 +10,13 @@ import {
   AiOutlineBell,
 } from "react-icons/ai";
 import { BsBriefcase } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import userIcon from "../../../assets/user.png";
 
 const Topbar = () => {
   const navigate = useNavigate();
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+
   const goToRoute = (route) => {
     navigate(route);
   };

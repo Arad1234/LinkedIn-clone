@@ -9,7 +9,7 @@ const LazyHomeLayout = lazy(() => import("../layouts/HomeLayout.jsx"));
 const LazyProfileLayout = lazy(() => import("../layouts/ProfileLayout.jsx"));
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/login",
     element: <Login />,
   },
   {

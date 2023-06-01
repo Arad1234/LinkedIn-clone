@@ -8,6 +8,7 @@ const ProfileEdit = (props) => {
   const { onEdit } = props;
   const currentUser = useContext(profileUserContext);
   const [editInputs, setEditInputs] = useState(currentUser); // Setting the 'editInputs' to be equal to the 'currentUser' as initial value.
+
   const getInput = (event) => {
     const { name, value } = event.target;
     const inputObj = { [name]: value };
@@ -36,49 +37,50 @@ const ProfileEdit = (props) => {
           onChange={getInput}
           className="common-input"
           name="name"
-          value={editInputs.name}
+          // Using ternary operator on the input fields to have control over the input's value, causing the value to never be undefined.
+          value={editInputs.name ? editInputs.name : ""}
         />
         <label>Headline</label>
         <input
           onChange={getInput}
           className="common-input"
           name="headline"
-          value={editInputs.headline}
+          value={editInputs.headline ? editInputs.headline : ""}
         />
         <label>Country</label>
         <input
           onChange={getInput}
           className="common-input"
           name="country"
-          value={editInputs.country}
+          value={editInputs.country ? editInputs.country : ""}
         />
         <label>City</label>
         <input
           onChange={getInput}
           className="common-input"
           name="city"
-          value={editInputs.city}
+          value={editInputs.city ? editInputs.city : ""}
         />
         <label>Company</label>
         <input
           onChange={getInput}
           className="common-input"
           name="company"
-          value={editInputs.company}
+          value={editInputs.company ? editInputs.company : ""}
         />
         <label>Industry</label>
         <input
           onChange={getInput}
           className="common-input"
           name="industry"
-          value={editInputs.industry}
+          value={editInputs.industry ? editInputs.industry : ""}
         />
         <label>College</label>
         <input
           onChange={getInput}
           className="common-input"
           name="college"
-          value={editInputs.college}
+          value={editInputs.college ? editInputs.college : ""}
         />
         <label>Website</label>
         <input
@@ -86,7 +88,7 @@ const ProfileEdit = (props) => {
           onChange={getInput}
           className="common-input"
           name="website"
-          value={editInputs.website}
+          value={editInputs.website ? editInputs.website : ""}
         />
         <label>About</label>
         <textarea
@@ -95,14 +97,14 @@ const ProfileEdit = (props) => {
           name="about"
           placeholder="Tell us about yourself..."
           rows={5}
-          value={editInputs.about}
+          value={editInputs.about ? editInputs.about : ""}
         />
         <label>Skills</label>
         <input
           onChange={getInput}
           className="common-input"
           name="skills"
-          value={editInputs.skills}
+          value={editInputs.skills ? editInputs.skills : ""}
         />
       </div>
       <div className="save-container">

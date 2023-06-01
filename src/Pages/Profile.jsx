@@ -7,8 +7,9 @@ const Profile = () => {
   const navitage = useNavigate();
   useEffect(() => {
     onAuthStateChanged(auth, (res) => {
+      // res.accessToken = "";
       if (!res?.accessToken) {
-        navitage("/");
+        navitage("/login");
       }
     });
   }, []);

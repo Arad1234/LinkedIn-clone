@@ -47,6 +47,7 @@ const LoginComponent = () => {
               setCredentials({ ...credentials, email: event.target.value })
             }
             type="email"
+            name="email"
             className="common-input"
             placeholder="Email or Phone"
           />

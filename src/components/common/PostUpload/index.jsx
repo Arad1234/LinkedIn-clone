@@ -8,6 +8,7 @@ import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import { postStatus, getPosts } from "../../../api/FirestoreAPIs";
 
 import "./index.scss";
+import Loader from "../Loader";
 
 const PostStatus = () => {
   const [showModal, setShowModal] = useState(false);
@@ -41,7 +42,10 @@ const PostStatus = () => {
       closeConnection();
     };
   }, []);
-
+  // If the app hasn't yet fetched all the posts, render the Loader component.
+  if (allPosts.length === 0) {
+    return <Loader />;
+  }
   return (
     <div className="post-status-main">
       <div className="post-status">

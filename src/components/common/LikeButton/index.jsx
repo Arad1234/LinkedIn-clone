@@ -61,7 +61,7 @@ const LikeButton = (props) => {
     );
     const closeCommentsConnection = getComments(postId, setAllComments); // Getting all the comments per post.
     return () => {
-      // Returning the onSnapshot function so I can close the webSocket connections when the component is unmounts.
+      // Returning the onSnapshot function so I can close the webSocket connections when the component unmounts.
       closeCommentsConnection();
       closeLikesConnection();
     };

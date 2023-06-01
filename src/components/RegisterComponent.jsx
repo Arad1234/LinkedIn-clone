@@ -96,7 +96,7 @@ const RegisterComponent = () => {
           Already on LinkedIn?{" "}
           <span
             className="join-now"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/login")}
           >
             Sign in
           </span>
