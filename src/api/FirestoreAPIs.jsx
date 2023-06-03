@@ -14,6 +14,7 @@ import {
   setDoc,
   deleteDoc,
   getDoc,
+  getDocs,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -36,19 +37,32 @@ export const postStatus = (postData) => {
   return response;
 };
 
+// Deleting post.
+export const deletePost = async (postID) => {
+  const postRef = doc(postsRef, postID);
+  await deleteDoc(postRef);
+};
+
+export const updatePostStatus = async (status, postID) => {
+  const postRef = doc(postsRef, postID);
+  await updateDoc(postRef, { status: status });
+};
+
 // Retrieving data from firestore "posts" collection.
 // Using setState as the function param to change the state in "PostUpdate" component.
-export const getPosts = (setAllPosts) => {
+export const getPosts = (setAllPosts, setLoading) => {
   // Using the "onSnapshot" function to get real time updates whenever one of the documents that matches the query changes.
   // The "onSnapShot" function is being called whenever I add/delete/change a document to the firestore collection.
   // NOTE - It will be called automatically without the need to call the "getPosts()" function. This is a built in feature in firebase.
   // This is why the useEffect only needs to executes once.
+  setLoading(true);
   const allPostQuery = query(postsRef, orderBy("timeStamp"));
   const closeSocketConnection = onSnapshot(allPostQuery, (res) => {
     const postsArray = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
     setAllPosts(postsArray); // allPosts objects will contain an additional 'id' property.
+    setLoading(false);
   });
   return closeSocketConnection;
 };
@@ -177,18 +191,21 @@ export const getComments = (postID, setAllComments) => {
   return closeSocketConnection;
 };
 
-export const uploadProfileImage = async (
-  file,
-  currentProfileID,
-  setUrl,
-  setLoading
-) => {
+export const getAllUsers = async (setAllUsers) => {
+  const querySnapshot = await getDocs(usersRef);
+  const allUsers = [];
+  querySnapshot.forEach((doc) => {
+    allUsers.push(doc.data());
+  });
+  setAllUsers(allUsers);
+};
+
+export const uploadProfileImage = async (file, currentProfileID, setUrl) => {
   // Getting a reference of the profileImage for each user using the "currentProfileID".
   const profileImageFolderRef = ref(
     storage,
     `images/${currentProfileID}/profileImage.jpeg`
   );
-  setLoading(true);
   try {
     // Uploading new profile image to replace the existing one or to create a new one
     await uploadBytes(profileImageFolderRef, file);
@@ -200,12 +217,10 @@ export const uploadProfileImage = async (
   } catch (error) {
     console.log(error);
   }
-  setLoading(false);
 };
 
-export const getProfileImage = async (setLoading, currentProfileID, setUrl) => {
+export const getProfileImage = async (currentProfileID, setUrl) => {
   // Every time the component mounts this function will be called.
-  setLoading(true);
   const currentProfileRef = doc(usersRef, currentProfileID);
   const userSnapShot = await getDoc(currentProfileRef);
   const docData = userSnapShot.data();
@@ -213,5 +228,4 @@ export const getProfileImage = async (setLoading, currentProfileID, setUrl) => {
     console.log(docData);
     setUrl(docData.ProfileImageUrl);
   }
-  setLoading(false);
 };

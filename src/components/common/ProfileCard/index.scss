@@ -17,24 +17,103 @@
   position: $position;
 }
 
-.profile-card {
-  @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative);
-  .image-edit-icons {
-    display: flex;
+.main-profile-about {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 50rem;
+  .profile-card {
+    @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative);
+    .image-edit-icons {
+      display: flex;
+    }
+
+    .profile-info {
+      display: flex;
+      justify-content: space-between;
+      .website {
+        color: #004c75;
+      }
+
+      .skill-label {
+        font-weight: 600;
+      }
+      .right-info {
+        margin-right: 20px;
+        // Applying the same styles for two different className.
+        .college,
+        .company {
+          font-size: 14px;
+          font-weight: 600;
+          color: rgba(0, 0, 0, 0.9);
+          font-family: system-ui;
+          margin-bottom: 30px;
+        }
+
+        .company {
+          margin-top: -15px;
+        }
+      }
+    }
+    .edit-btn {
+      position: absolute;
+      right: 20px;
+      .edit-icon {
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 30px;
+        &:hover {
+          background-color: rgb(214, 213, 213);
+        }
+      }
+    }
+    .userName {
+      font-size: 24px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.9);
+      font-family: system-ui;
+      margin-top: -10px;
+    }
+    .headline {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.9);
+      font-family: system-ui;
+      margin-top: -35px;
+      width: 320px;
+      line-height: 20px; // What is the height of each line in the sentence.
+    }
+    .location {
+      font-size: 14px;
+      font-weight: 350;
+      color: rgba(0, 0, 0, 0.6);
+      font-family: system-ui;
+    }
+  }
+  .about-card {
+    @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative);
+
+    label {
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.9);
+      line-height: 25px;
+      font-family: system-ui;
+    }
   }
 }
+
 .image-input-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin: 10px 0 40px 0;
-  border: 1px solid gray;
+  margin: 10px 0 20px 0;
+  border: 2px solid rgb(213, 210, 210);
   border-radius: 60px;
-  padding: 10px;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   background-color: #f0f0f0;
   cursor: pointer;
   .select-image-label {
@@ -52,86 +131,17 @@
   justify-content: center;
   margin: auto;
 }
+.ant-modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
 .profile-image {
-  width: 121%;
-  height: 121%;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
   border-radius: 50%;
 }
-#inputTag {
+
+#fileInputTag {
   display: none;
-}
-
-.profile-info {
-  display: flex;
-  justify-content: space-between;
-  .website {
-    color: #004c75;
-  }
-
-  .skill-label {
-    font-weight: 600;
-  }
-  .right-info {
-    margin-right: 20px;
-    // Applying the same styles for two different className.
-    .college,
-    .company {
-      font-size: 14px;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.9);
-      font-family: system-ui;
-      margin-bottom: 30px;
-    }
-
-    .company {
-      margin-top: -15px;
-    }
-  }
-}
-.edit-btn {
-  position: absolute;
-  right: 20px;
-  .edit-icon {
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 30px;
-    &:hover {
-      background-color: rgb(214, 213, 213);
-    }
-  }
-}
-.userName {
-  font-size: 24px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.9);
-  font-family: system-ui;
-  margin-top: -10px;
-}
-.headline {
-  font-size: 16px;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.9);
-  font-family: system-ui;
-  margin-top: -35px;
-  width: 320px;
-  line-height: 20px; // What is the height of each line in the sentence.
-}
-.location {
-  font-size: 14px;
-  font-weight: 350;
-  color: rgba(0, 0, 0, 0.6);
-  font-family: system-ui;
-}
-
-.about-card {
-  @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative);
-
-  label {
-    font-size: 20px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.9);
-    line-height: 25px;
-    font-family: system-ui;
-  }
 }

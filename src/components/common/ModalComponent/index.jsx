@@ -3,20 +3,30 @@ import { Modal, Button } from "antd";
 
 import "./index.scss";
 const ModalComponent = (props) => {
-  const { setStatus, status, showModal, setShowModal, createPost } = props;
+  const {
+    setStatus,
+    status,
+    showModal,
+    setShowModal,
+    createPost,
+    setEditMode,
+    editMode,
+    updatePost,
+  } = props;
   const clearModal = () => {
     setShowModal(false);
+    setEditMode(false);
     setStatus("");
   };
   return (
     <div>
       <Modal
-        title="Create a post"
+        title={editMode ? "Edit post" : "Create a post"}
         open={showModal}
         onCancel={clearModal}
         footer={[
           <Button
-            onClick={createPost} // Calling the function at the parent component
+            onClick={editMode ? updatePost : createPost} // Calling the function at the parent component
             key="submit"
             type="primary"
             disabled={!status.length} // If there is a text, the "disabled" property is set to false.
@@ -28,7 +38,7 @@ const ModalComponent = (props) => {
         <input
           onChange={(event) => setStatus(event.target.value)}
           className="modal-input"
-          placeholder="What do you want to talk about?"
+          placeholder={editMode ? "" : "What do you want to talk about?"}
           value={status}
         />
       </Modal>

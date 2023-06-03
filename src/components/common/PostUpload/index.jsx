@@ -1,19 +1,28 @@
-import React, { useState, useContext, useEffect, useMemo } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import ModalComponent from "../ModalComponent";
 import { toast } from "react-toastify";
 import PostsCard from "../PostsCard";
 import { homeUserContext } from "../../../layouts/HomeLayout";
 import { getUniqueID } from "../../../helpers/getUniqueID";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
-import { postStatus, getPosts } from "../../../api/FirestoreAPIs";
-
+import {
+  postStatus,
+  getPosts,
+  updatePostStatus,
+  deletePost,
+} from "../../../api/FirestoreAPIs";
 import "./index.scss";
 import Loader from "../Loader";
+import DeleteModal from "./DeleteModal";
 
 const PostStatus = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [status, setStatus] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [allPosts, setAllPosts] = useState([]);
+  const [postID, setPostID] = useState("");
   // Using the useContext hook to retrieve the current user from the 'HomeLayout' component.
   const currentUser = useContext(homeUserContext);
   // Create a new post - adds a new document to the 'posts' collection.
@@ -35,15 +44,29 @@ const PostStatus = () => {
       toast.error("Could Not Upload The Post");
     }
   };
+
+  const updatePost = () => {
+    updatePostStatus(status, postID);
+    setShowModal(false);
+    setStatus("");
+    setEditMode(false);
+    toast.success("Post has been updated successfully");
+  };
+
+  const handleDeletePost = async (postID) => {
+    await deletePost(postID);
+    setShowDeleteModal(false);
+    toast.success("Post has been deleted successfully");
+  };
   // Getting all the posts with the "getPosts" function from the firestore API file.
   useEffect(() => {
-    const closeConnection = getPosts(setAllPosts);
+    const closeConnection = getPosts(setAllPosts, setLoading);
     return () => {
       closeConnection();
     };
   }, []);
   // If the app hasn't yet fetched all the posts, render the Loader component.
-  if (allPosts.length === 0) {
+  if (loading) {
     return <Loader />;
   }
   return (
@@ -62,13 +85,30 @@ const PostStatus = () => {
         showModal={showModal}
         setShowModal={setShowModal}
         createPost={createPost}
+        setEditMode={setEditMode}
+        editMode={editMode}
+        updatePost={updatePost}
+      />
+      {/* Created a modal to handle post deletion. */}
+      <DeleteModal
+        setShowDeleteModal={setShowDeleteModal}
+        showDeleteModal={showDeleteModal}
+        handleDeletePost={handleDeletePost}
+        postID={postID}
       />
       {/* "We wrap the map function with a div element so that the list of items it generates can be displayed separately on the page." */}
       <div>
         {allPosts.map((post) => {
           return (
             <div key={post.postID}>
-              <PostsCard post={post} />
+              <PostsCard
+                post={post}
+                setShowModal={setShowModal}
+                setShowDeleteModal={setShowDeleteModal}
+                setStatus={setStatus}
+                setEditMode={setEditMode}
+                setPostID={setPostID}
+              />
             </div>
           );
         })}

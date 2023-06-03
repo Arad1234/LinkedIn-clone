@@ -2,11 +2,18 @@ import React, { useRef } from "react";
 import "./index.scss";
 import { Modal } from "antd";
 import { AiFillCamera } from "react-icons/ai";
+import { Space, Spin } from "antd";
 
-const ModalProfile = (props) => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { showModal, setShowModal, handleFileSelected, url } =
-    props;
+const ModalUploadImage = (props) => {
+  // useRef to open the file explorer when <div> is clicked.
+  const fileInputRef = useRef(null);
+  const {
+    showModal,
+    setShowModal,
+    handleFileSelected,
+    url,
+    uploadImageLoading,
+  } = props;
 
   return (
     <Modal
@@ -17,11 +24,17 @@ const ModalProfile = (props) => {
     >
       <div className="image-input-container">
         {url ? (
-          <img
-            className="profile-image"
-            src={url}
-            alt="Selected"
-          />
+          uploadImageLoading ? (
+            <Space size="middle">
+              <Spin size="large" />
+            </Space>
+          ) : (
+            <img
+              className="profile-image"
+              src={url}
+              alt="Selected"
+            />
+          )
         ) : (
           <>
             <label className="select-image-label">Select Image</label>
@@ -30,7 +43,7 @@ const ModalProfile = (props) => {
         )}
       </div>
       <input
-        id="inputTag"
+        id="fileInputTag"
         ref={fileInputRef}
         type="file"
         accept="image/*"
@@ -40,4 +53,4 @@ const ModalProfile = (props) => {
   );
 };
 
-export default ModalProfile;
+export default ModalUploadImage;

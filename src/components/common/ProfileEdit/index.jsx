@@ -23,97 +23,99 @@ const ProfileEdit = (props) => {
     onEdit(); // Going back to the profile page.
   };
   return (
-    <div className="profile-card">
-      <div className="edit-btn">
-        <AiOutlineClose
-          className="close-icon"
-          size={23}
-          onClick={onEdit}
-        />
-      </div>
-      <div className="profile-edit-inputs">
-        <label>Full name</label>
-        <input
-          onChange={getInput}
-          className="common-input"
-          name="name"
-          // Using ternary operator on the input fields to have control over the input's value, causing the value to never be undefined.
-          value={editInputs.name ? editInputs.name : ""}
-        />
-        <label>Headline</label>
-        <input
-          onChange={getInput}
-          className="common-input"
-          name="headline"
-          value={editInputs.headline ? editInputs.headline : ""}
-        />
-        <label>Country</label>
-        <input
-          onChange={getInput}
-          className="common-input"
-          name="country"
-          value={editInputs.country ? editInputs.country : ""}
-        />
-        <label>City</label>
-        <input
-          onChange={getInput}
-          className="common-input"
-          name="city"
-          value={editInputs.city ? editInputs.city : ""}
-        />
-        <label>Company</label>
-        <input
-          onChange={getInput}
-          className="common-input"
-          name="company"
-          value={editInputs.company ? editInputs.company : ""}
-        />
-        <label>Industry</label>
-        <input
-          onChange={getInput}
-          className="common-input"
-          name="industry"
-          value={editInputs.industry ? editInputs.industry : ""}
-        />
-        <label>College</label>
-        <input
-          onChange={getInput}
-          className="common-input"
-          name="college"
-          value={editInputs.college ? editInputs.college : ""}
-        />
-        <label>Website</label>
-        <input
-          type="url"
-          onChange={getInput}
-          className="common-input"
-          name="website"
-          value={editInputs.website ? editInputs.website : ""}
-        />
-        <label>About</label>
-        <textarea
-          onChange={getInput}
-          className="common-textArea"
-          name="about"
-          placeholder="Tell us about yourself..."
-          rows={5}
-          value={editInputs.about ? editInputs.about : ""}
-        />
-        <label>Skills</label>
-        <input
-          onChange={getInput}
-          className="common-input"
-          name="skills"
-          value={editInputs.skills ? editInputs.skills : ""}
-        />
-      </div>
-      <div className="save-container">
-        <button
-          onClick={updateProfileData}
-          className="save-btn"
-        >
-          Save
-        </button>
+    <div className="main-profile-about">
+      <div className="profile-card">
+        <div className="edit-btn">
+          <AiOutlineClose
+            className="close-icon"
+            size={23}
+            onClick={onEdit}
+          />
+        </div>
+        <div className="profile-edit-inputs">
+          <label>Full name</label>
+          <input
+            onChange={getInput}
+            className="common-input"
+            name="name"
+            // Using ternary operator on the input fields to have control over the input's value, causing the value to never be undefined.
+            value={editInputs.name ? editInputs.name : ""}
+          />
+          <label>Headline</label>
+          <input
+            onChange={getInput}
+            className="common-input"
+            name="headline"
+            value={editInputs.headline ? editInputs.headline : ""}
+          />
+          <label>Country</label>
+          <input
+            onChange={getInput}
+            className="common-input"
+            name="country"
+            value={editInputs.country ? editInputs.country : ""}
+          />
+          <label>City</label>
+          <input
+            onChange={getInput}
+            className="common-input"
+            name="city"
+            value={editInputs.city ? editInputs.city : ""}
+          />
+          <label>Company</label>
+          <input
+            onChange={getInput}
+            className="common-input"
+            name="company"
+            value={editInputs.company ? editInputs.company : ""}
+          />
+          <label>Industry</label>
+          <input
+            onChange={getInput}
+            className="common-input"
+            name="industry"
+            value={editInputs.industry ? editInputs.industry : ""}
+          />
+          <label>College</label>
+          <input
+            onChange={getInput}
+            className="common-input"
+            name="college"
+            value={editInputs.college ? editInputs.college : ""}
+          />
+          <label>Website</label>
+          <input
+            type="url"
+            onChange={getInput}
+            className="common-input"
+            name="website"
+            value={editInputs.website ? editInputs.website : ""}
+          />
+          <label>About</label>
+          <textarea
+            onChange={getInput}
+            className="common-textArea"
+            name="about"
+            placeholder="Tell us about yourself..."
+            rows={5}
+            value={editInputs.about ? editInputs.about : ""}
+          />
+          <label>Skills</label>
+          <input
+            onChange={getInput}
+            className="common-input"
+            name="skills"
+            value={editInputs.skills ? editInputs.skills : ""}
+          />
+        </div>
+        <div className="save-container">
+          <button
+            onClick={updateProfileData}
+            className="save-btn"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </div>
   );
