@@ -13,8 +13,15 @@ import {
   orderBy,
   setDoc,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
-import { getDownloadURL, getMetadata, listAll, ref } from "firebase/storage";
+import {
+  getDownloadURL,
+  getMetadata,
+  listAll,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 // Creates a reference to a specific collection in the DB.
 // If the collection does not exists, when I first insert a document, it will be created automatically.
@@ -64,7 +71,7 @@ export const getSingleUser = (setCurrentProfile, id) => {
 
   const closeSocketConnection = onSnapshot(getUserQuery, (res) => {
     const singleUser = res.docs.map((doc) => {
-      return { ...doc.data() };
+      return { ...doc.data(), id: doc.id }; // Adding the firebase id so I can get a reference to a specific document using the "doc" function.
     })[0]; // Accessing the single user that matches the query.
     setCurrentProfile(singleUser);
   });
@@ -170,12 +177,41 @@ export const getComments = (postID, setAllComments) => {
   return closeSocketConnection;
 };
 
-export const getProfileImage = (setUrl, setLoading) => {
+export const uploadProfileImage = async (
+  file,
+  currentProfileID,
+  setUrl,
+  setLoading
+) => {
+  // Getting a reference of the profileImage for each user using the "currentProfileID".
+  const profileImageFolderRef = ref(
+    storage,
+    `images/${currentProfileID}/profileImage.jpeg`
+  );
   setLoading(true);
-  const profileImageFolderRef = ref(storage, "images/Profile Image.jpeg");
-  getDownloadURL(profileImageFolderRef).then((url) => {
+  try {
+    // Uploading new profile image to replace the existing one or to create a new one
+    await uploadBytes(profileImageFolderRef, file);
+    const url = await getDownloadURL(profileImageFolderRef);
+    // Updates the user's "ProfileImageUrl" property in the users collection.
+    const currentProfileRef = doc(usersRef, currentProfileID);
+    await updateDoc(currentProfileRef, { ProfileImageUrl: url });
     setUrl(url);
-    setLoading(false);
-  });
-  return profileImageFolderRef;
+  } catch (error) {
+    console.log(error);
+  }
+  setLoading(false);
+};
+
+export const getProfileImage = async (setLoading, currentProfileID, setUrl) => {
+  // Every time the component mounts this function will be called.
+  setLoading(true);
+  const currentProfileRef = doc(usersRef, currentProfileID);
+  const userSnapShot = await getDoc(currentProfileRef);
+  const docData = userSnapShot.data();
+  if (docData.ProfileImageUrl) {
+    console.log(docData);
+    setUrl(docData.ProfileImageUrl);
+  }
+  setLoading(false);
 };

@@ -7,8 +7,9 @@ import {
   getSingleUser,
   getSingleUserPosts,
   getProfileImage,
+  uploadProfileImage,
 } from "../../../api/FirestoreAPIs";
-import { uploadBytes } from "firebase/storage";
+import ModalProfile from "./ModalProfile";
 import "./index.scss";
 import Loader from "../Loader";
 import ProfileImage from "./ProfileImage";
@@ -21,9 +22,11 @@ const ProfileCard = (props) => {
   // Using the state object passed from the 'navigate' instance that located in 'PostsCard' folder.
   const location = useLocation();
   const [allPosts, setAllPosts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [fileReference, setFileReference] = useState(null);
+
+  // Setting the fileReference so when the user uploads a new image, it will replace the existing one.
   const [currentProfile, setCurrentProfile] = useState({});
 
   // Using useEffect to open the initial websocket connection with firestore.
@@ -38,9 +41,6 @@ const ProfileCard = (props) => {
       setAllPosts,
       location.state.id
     );
-
-    const profileImageFolderRef = getProfileImage(setUrl, setLoading);
-    setFileReference(profileImageFolderRef);
     return () => {
       // Closing sockets connections.
       closeUserConnection();
@@ -48,20 +48,22 @@ const ProfileCard = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (Object.keys(currentProfile).length > 0) {
+      getProfileImage(setLoading, currentProfile.id, setUrl).then(() =>
+        console.log("finished")
+      );
+    }
+  }, [currentProfile]);
+
   const handleFileSelected = async (event) => {
     const file = event.target.files[0];
-    // Uploading the image with the same reference (fileReference) so it will replace the existing image.
-    await uploadBytes(fileReference, file);
-    // Getting the new profile image that the user just uploaded and setting it's url accordingly.
-    getProfileImage(setUrl, setLoading);
+    await uploadProfileImage(file, currentProfile.id, setUrl, setLoading);
+    setShowModal(false);
   };
 
   // If the current profile or all posts has not been fetched yet, render the Loader component.
-  if (
-    Object.keys(currentProfile).length === 0 ||
-    allPosts.length === 0 ||
-    !fileReference
-  ) {
+  if (Object.keys(currentProfile).length === 0 || allPosts.length === 0) {
     return <Loader />;
   }
   return (
@@ -71,7 +73,15 @@ const ProfileCard = (props) => {
           <ProfileImage
             loading={loading}
             url={url}
+            currentProfile={currentProfile}
+            setShowModal={setShowModal}
+          />
+          {/* When the user wants to change his profile image, a modal will popup. */}
+          <ModalProfile
+            showModal={showModal}
+            setShowModal={setShowModal}
             handleFileSelected={handleFileSelected}
+            url={url}
           />
           {/* Checking if the user entered his own profile. If he does, he can edit, else, unshow the pencil icon */}
           {location?.state?.id === currentUser.userID ? (

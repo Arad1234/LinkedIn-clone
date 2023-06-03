@@ -21,109 +21,107 @@
   @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative);
   .image-edit-icons {
     display: flex;
-    .image-input-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin: 10px 0 40px 0;
-      border: 1px solid gray;
-      border-radius: 60px;
-      padding: 10px;
-      width: 100px;
-      height: 100px;
-      background-color: #f0f0f0;
-      cursor: pointer;
-      .loader-container {
-        margin-left: 10px;
-      }
-      .change-profile-label {
-        position: absolute;
-        top: 10rem;
-        left: 20px;
-        border: 1px solid gray;
-        padding: 0px 8px 0 5px;
-        border-radius: 10px;
-      }
-      .profile-image {
-        width: 121%;
-        height: 121%;
-        object-fit: cover;
-        border-radius: 50%;
-      }
-      label {
-        cursor: pointer;
-        font-family: system-ui;
-        font-weight: 600;
-        #inputTag {
-          display: none;
-        }
-      }
-    }
+  }
+}
+.image-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0 40px 0;
+  border: 1px solid gray;
+  border-radius: 60px;
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  .select-image-label {
+    cursor: pointer;
+  }
+}
+
+// Built in class names of the modal that I can mamipulate.
+.ant-modal-content {
+  width: 25rem;
+  margin: auto;
+}
+.ant-modal-body {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+.profile-image {
+  width: 121%;
+  height: 121%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+#inputTag {
+  display: none;
+}
+
+.profile-info {
+  display: flex;
+  justify-content: space-between;
+  .website {
+    color: #004c75;
   }
 
-  .profile-info {
-    display: flex;
-    justify-content: space-between;
-    .website {
-      color: #004c75;
-    }
-
-    .skill-label {
-      font-weight: 600;
-    }
-    .right-info {
-      margin-right: 20px;
-      // Applying the same styles for two different className.
-      .college,
-      .company {
-        font-size: 14px;
-        font-weight: 600;
-        color: rgba(0, 0, 0, 0.9);
-        font-family: system-ui;
-        margin-bottom: 30px;
-      }
-
-      .company {
-        margin-top: -15px;
-      }
-    }
-  }
-  .edit-btn {
-    position: absolute;
-    right: 20px;
-    .edit-icon {
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 30px;
-      &:hover {
-        background-color: rgb(214, 213, 213);
-      }
-    }
-  }
-  .userName {
-    font-size: 24px;
+  .skill-label {
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.9);
-    font-family: system-ui;
-    margin-top: -10px;
   }
-  .headline {
-    font-size: 16px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.9);
-    font-family: system-ui;
-    margin-top: -35px;
-    width: 320px;
-    line-height: 20px; // What is the height of each line in the sentence.
+  .right-info {
+    margin-right: 20px;
+    // Applying the same styles for two different className.
+    .college,
+    .company {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.9);
+      font-family: system-ui;
+      margin-bottom: 30px;
+    }
+
+    .company {
+      margin-top: -15px;
+    }
   }
-  .location {
-    font-size: 14px;
-    font-weight: 350;
-    color: rgba(0, 0, 0, 0.6);
-    font-family: system-ui;
+}
+.edit-btn {
+  position: absolute;
+  right: 20px;
+  .edit-icon {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 30px;
+    &:hover {
+      background-color: rgb(214, 213, 213);
+    }
   }
+}
+.userName {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+  font-family: system-ui;
+  margin-top: -10px;
+}
+.headline {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  font-family: system-ui;
+  margin-top: -35px;
+  width: 320px;
+  line-height: 20px; // What is the height of each line in the sentence.
+}
+.location {
+  font-size: 14px;
+  font-weight: 350;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: system-ui;
 }
 
 .about-card {

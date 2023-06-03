@@ -63,6 +63,7 @@ const RegisterComponent = () => {
               setCredentials({ ...credentials, email: event.target.value })
             }
             type="email"
+            name="email"
             className="common-input"
             placeholder="Email or phone number"
           />
