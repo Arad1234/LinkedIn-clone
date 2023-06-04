@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-top: 50px;
   .post-status {
     width: 550px;
     height: 120px;
@@ -13,6 +14,28 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 20px;
+    .profile-image-card {
+      border: 1px solid rgb(205, 205, 205);
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 50%;
+      position: absolute;
+      top: 5.7rem;
+    }
+    .user-name-card {
+      margin-top: 3rem;
+      font-weight: 600;
+      font-family: system-ui;
+    }
+    .current-user-image {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1px solid gray;
+    }
     .open-post-modal {
       width: 80%;
       height: 50px;

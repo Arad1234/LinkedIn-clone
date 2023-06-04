@@ -1,6 +1,7 @@
 import React, { useContext, useRef } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import { profileUserContext } from "../../../layouts/ProfileLayout";
+import defaultUserPhoto from "../../../assets/defaultUser.png";
 
 const ProfileImage = (props) => {
   const currentUser = useContext(profileUserContext);
@@ -24,7 +25,10 @@ const ProfileImage = (props) => {
           <AiFillCamera size={"25px"} />
         </>
       ) : (
-        <h3>No photo</h3>
+        <img
+          src={defaultUserPhoto}
+          className="profile-image"
+        />
       )}
     </div>
   );

@@ -1,7 +1,6 @@
 //// That API file handle the requests for both the 'users' and 'posts' collections.
 import { firestore, storage } from "../firebaseConfig";
 import { toast } from "react-toastify";
-
 import {
   addDoc,
   collection,
@@ -16,13 +15,7 @@ import {
   getDoc,
   getDocs,
 } from "firebase/firestore";
-import {
-  getDownloadURL,
-  getMetadata,
-  listAll,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 // Creates a reference to a specific collection in the DB.
 // If the collection does not exists, when I first insert a document, it will be created automatically.
@@ -30,6 +23,7 @@ const postsRef = collection(firestore, "posts");
 const usersRef = collection(firestore, "users");
 const likesRef = collection(firestore, "likes");
 const commentsRef = collection(firestore, "comments");
+const connectionsRef = collection(firestore, "connections");
 
 export const postStatus = (postData) => {
   // addDoc returns a promise (response = promise<pending>). Here I add a new document to the "posts" collection.
@@ -74,6 +68,7 @@ export const getSingleUserPosts = (setAllPosts, id) => {
     const postsArray = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
+    console.log(postsArray);
     setAllPosts(postsArray);
   });
   return closeSocketConnection;
@@ -191,11 +186,12 @@ export const getComments = (postID, setAllComments) => {
   return closeSocketConnection;
 };
 
+// Getting all users from the users collection.
 export const getAllUsers = async (setAllUsers) => {
   const querySnapshot = await getDocs(usersRef);
   const allUsers = [];
   querySnapshot.forEach((doc) => {
-    allUsers.push(doc.data());
+    allUsers.push({ ...doc.data(), id: doc.id });
   });
   setAllUsers(allUsers);
 };
@@ -225,7 +221,40 @@ export const getProfileImage = async (currentProfileID, setUrl) => {
   const userSnapShot = await getDoc(currentProfileRef);
   const docData = userSnapShot.data();
   if (docData.ProfileImageUrl) {
-    console.log(docData);
     setUrl(docData.ProfileImageUrl);
   }
+};
+
+// currentUserID is the current user that logged to the app, userConnectionID is the user to add to the connections of the current user.
+export const addConnection = async (currentUserID, userConnectionID) => {
+  const connectionToAddRef = doc(
+    connectionsRef,
+    `${currentUserID}_${userConnectionID}`
+  );
+  await setDoc(connectionToAddRef, { currentUserID, userConnectionID });
+  toast.success("Connection Added!");
+};
+
+// Getting all the connections of the current user.
+export const getConnections = (userID, userWhoUploadPostID, setIsConnected) => {
+  try {
+    const connectedQuery = query(
+      connectionsRef,
+      where("currentUserID", "==", userID)
+    );
+
+    var closeConnectionsSocket = onSnapshot(connectedQuery, (res) => {
+      const connections = res.docs.map((doc) => {
+        return doc.data();
+      });
+      // Check if the connections array - all the connections of the current user, contains the user that upload that specific post.
+      const isConnected = connections.some(
+        (connection) => connection.userConnectionID === userWhoUploadPostID
+      );
+      setIsConnected(isConnected);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  return closeConnectionsSocket;
 };

@@ -1,0 +1,19 @@
+.page-title {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  font-size: 40px;
+}
+.main-connections {
+  display: flex;
+  justify-content: center;
+  .all-connections {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    background-color: whitesmoke;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 20px;
+  }
+}

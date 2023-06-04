@@ -1,0 +1,55 @@
+.connection-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgb(195, 194, 194);
+  width: 15rem;
+  height: 16rem;
+  border-radius: 20px;
+  padding: 15px;
+  position: relative;
+  .profile-image-connection {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    cursor: pointer;
+  }
+  .user-name {
+    cursor: pointer;
+    font-weight: 600;
+    margin: 5px 0px 2px 0px;
+    width: 10rem;
+    text-align: center;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.9);
+    font-family: system-ui;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .user-headline {
+    font-weight: 400;
+    margin: 0;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  .connect-button {
+    position: absolute;
+    padding: 6px;
+    font-weight: 600;
+    color: #044f9b;
+    font-size: 16px;
+    font-family: system-ui;
+    width: 89%;
+    bottom: 20px;
+    border-radius: 20px;
+    border: 1px solid #0658a9;
+    cursor: pointer;
+    &:hover {
+      background-color: #ddecf2;
+    }
+  }
+}

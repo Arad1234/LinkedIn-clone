@@ -6,7 +6,8 @@
   $margin,
   $border-radius,
   $padding,
-  $position
+  $position,
+  $margin-bottom
 ) {
   width: $width;
   height: $height;
@@ -15,6 +16,7 @@
   border-radius: $border-radius;
   padding: $padding;
   position: $position;
+  margin-bottom: $margin-bottom;
 }
 
 .main-profile-about {
@@ -23,7 +25,7 @@
   margin: auto;
   width: 50rem;
   .profile-card {
-    @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative);
+    @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative, 0);
     .image-edit-icons {
       display: flex;
     }
@@ -91,7 +93,16 @@
     }
   }
   .about-card {
-    @include card-styled(auto, auto, whitesmoke, 30px, 5px, 20px, relative);
+    @include card-styled(
+      auto,
+      auto,
+      whitesmoke,
+      30px,
+      5px,
+      20px,
+      relative,
+      -20px
+    );
 
     label {
       font-size: 20px;

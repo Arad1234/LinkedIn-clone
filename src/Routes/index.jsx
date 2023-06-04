@@ -7,6 +7,9 @@ import Register from "../Pages/Register.jsx";
 // Created LazyLoading components to load each component only if the user enter the route of that component.
 const LazyHomeLayout = lazy(() => import("../layouts/HomeLayout.jsx"));
 const LazyProfileLayout = lazy(() => import("../layouts/ProfileLayout.jsx"));
+const LazyConnectionsLayout = lazy(() =>
+  import("../layouts/ConnectionsLayout.jsx")
+);
 export const router = createBrowserRouter([
   {
     path: "/login",
@@ -29,6 +32,15 @@ export const router = createBrowserRouter([
     element: (
       <Suspense fallback={<Loader />}>
         <LazyProfileLayout />
+      </Suspense>
+    ),
+  },
+
+  {
+    path: "/connections",
+    element: (
+      <Suspense fallback={<Loader />}>
+        <LazyConnectionsLayout />
       </Suspense>
     ),
   },

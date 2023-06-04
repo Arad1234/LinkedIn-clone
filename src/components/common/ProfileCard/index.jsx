@@ -73,7 +73,6 @@ const ProfileCard = (props) => {
   return (
     <>
       <div className="main-profile-about">
-        {" "}
         <div className="profile-card">
           <div className="image-edit-icons">
             <ProfileImage

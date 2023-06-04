@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { homeUserContext } from "../../../layouts/HomeLayout";
+import { connectionsUserContext } from "../../../layouts/ConnectionsLayout";
 import { onLogout } from "../../../api/AuthAPIs";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../Button";
@@ -7,7 +8,11 @@ import "./index.scss";
 const ProfilePopup = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const currentUser = useContext(homeUserContext);
+  const homeCurrentUser = useContext(homeUserContext);
+  const connectionsCurrentUser = useContext(connectionsUserContext);
+  // Checks from what route the user navigated to the profile page.
+  const currentUser =
+    location.pathname === "/home" ? homeCurrentUser : connectionsCurrentUser;
   return (
     <div className="popup-card">
       <p className="name">{currentUser.name}</p>

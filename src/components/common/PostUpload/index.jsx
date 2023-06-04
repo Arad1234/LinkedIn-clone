@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ModalComponent from "../ModalComponent";
 import { toast } from "react-toastify";
 import PostsCard from "../PostsCard";
@@ -11,6 +11,7 @@ import {
   updatePostStatus,
   deletePost,
 } from "../../../api/FirestoreAPIs";
+import defaultUserPhoto from "../../../assets/defaultUser.png";
 import "./index.scss";
 import Loader from "../Loader";
 import DeleteModal from "./DeleteModal";
@@ -20,7 +21,8 @@ const PostStatus = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [status, setStatus] = useState("");
   const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // Setting the loading state to be true when the component mounts to show the Loader component until I fetched all the data from the DB.
+  const [loading, setLoading] = useState(true);
   const [allPosts, setAllPosts] = useState([]);
   const [postID, setPostID] = useState("");
   // Using the useContext hook to retrieve the current user from the 'HomeLayout' component.
@@ -44,7 +46,7 @@ const PostStatus = () => {
       toast.error("Could Not Upload The Post");
     }
   };
-
+  console.log(currentUser);
   const updatePost = () => {
     updatePostStatus(status, postID);
     setShowModal(false);
@@ -72,6 +74,21 @@ const PostStatus = () => {
   return (
     <div className="post-status-main">
       <div className="post-status">
+        <img
+          className="profile-image-card"
+          src={
+            currentUser.ProfileImageUrl
+              ? currentUser.ProfileImageUrl
+              : defaultUserPhoto
+          }
+        />
+        <label className="user-name-card">{currentUser.name}</label>
+      </div>
+      <div className="post-status">
+        <img
+          className="current-user-image"
+          src={currentUser.ProfileImageUrl}
+        />
         <button
           onClick={() => setShowModal(true)}
           className="open-post-modal"
