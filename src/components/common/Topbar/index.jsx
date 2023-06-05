@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
 import ProfilePopup from "../ProfilePopup";
 import LinkedinLogo from "../../../assets/linkedinLogo.png";
@@ -10,51 +10,111 @@ import {
   AiOutlineBell,
 } from "react-icons/ai";
 import { BsBriefcase } from "react-icons/bs";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import userIcon from "../../../assets/user.png";
+import SearchUsers from "../SearchUsers";
+import { getSearchedUsers } from "../../../api/FirestoreAPIs";
+import SearchResults from "./SearchResults";
 
 const Topbar = () => {
   const navigate = useNavigate();
-  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [isPageLong, setIsPageLong] = useState(false);
+  const [searchInputValue, setSearchInputValue] = useState("");
+  const [allUsers, setAllUsers] = useState([]);
 
-  const goToRoute = (route) => {
-    navigate(route);
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  useEffect(() => {
+    // Check the width of the page to render the search bar.
+    const handleResize = () => {
+      const windowWidth = window.innerWidth;
+      setIsPageLong(windowWidth > 1200);
+    };
+    handleResize();
+    // Created an event listener for resizing the window browser.
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Using debouncing function to call the "getSearchedUsers" function only when the user stopped searching for 300ms or more.
+    // This setTimeout function will be created right after the previous one has been cleared.
+    const debouncing = setTimeout(() => {
+      getSearchedUsers(setAllUsers, searchInputValue);
+    }, 300);
+    return () => {
+      // This function will cancel the previos setTimeout from the js runtime.
+      clearTimeout(debouncing);
+    };
+  }, [searchInputValue]);
+
+  const goToRoute = (route, optionalData) => {
+    navigate(route, optionalData);
+  };
+  // Variable for all the icons so I will not repeat the JSX code.
+  const allIconsHTML = (
+    <>
+      <AiOutlineHome
+        size={30}
+        className="react-icon"
+        onClick={() => goToRoute("/home")}
+      />
+      <AiOutlineUserSwitch
+        size={30}
+        className="react-icon"
+        onClick={() => goToRoute("/connections")}
+      />
+      <BsBriefcase
+        size={30}
+        className="react-icon"
+      />
+      <AiOutlineMessage
+        size={30}
+        className="react-icon"
+      />
+      <AiOutlineBell
+        size={30}
+        className="react-icon"
+      />
+    </>
+  );
+  // Gloabal props for the searchUsers component.
+  const searchUsersProps = {
+    setShowSearchBar,
+    showSearchBar,
+    setSearchInputValue,
+    searchInputValue,
   };
   return (
-    <div className="topbar-main">
-      {/* Topbar icons */}
+    <nav className="topbar-main">
       <img
         className="linkedin-logo"
         src={LinkedinLogo}
         alt="LinkedinLogo"
       />
       <div className="react-icons">
-        <AiOutlineSearch
-          size={30}
-          className="react-icon"
-        />
-        <AiOutlineHome
-          size={30}
-          className="react-icon"
-          onClick={() => goToRoute("/home")}
-        />
-        <AiOutlineUserSwitch
-          size={30}
-          className="react-icon"
-          onClick={() => goToRoute("/connections")}
-        />
-        <BsBriefcase
-          size={30}
-          className="react-icon"
-        />
-        <AiOutlineMessage
-          size={30}
-          className="react-icon"
-        />
-        <AiOutlineBell
-          size={30}
-          className="react-icon"
-        />
+        {/* Rendering the SearchBar component if the page is wide enough. */}
+        {isPageLong ? (
+          <>
+            <SearchUsers {...searchUsersProps} />
+            {allIconsHTML}
+          </>
+        ) : showSearchBar ? (
+          <SearchUsers {...searchUsersProps} />
+        ) : (
+          <>
+            <AiOutlineSearch
+              size={30}
+              className="react-icon"
+              onClick={() => setShowSearchBar(true)}
+            />
+            {allIconsHTML}
+          </>
+        )}
+
         <img
           onClick={() => setShowLogoutPopup(!showLogoutPopup)}
           className="user-logo"
@@ -66,9 +126,24 @@ const Topbar = () => {
             <ProfilePopup />
           </div>
         ) : null}
-        {/* Topbar icons */}
       </div>
-    </div>
+      {showSearchBar && (
+        <div className="search-results">
+          {allUsers.map((user) => {
+            return (
+              <div
+                onClick={() =>
+                  goToRoute("/profile", { state: { id: user.userID } })
+                }
+                key={user.userID}
+              >
+                <SearchResults user={user} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </nav>
   );
 };
 

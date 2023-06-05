@@ -68,7 +68,6 @@ export const getSingleUserPosts = (setAllPosts, id) => {
     const postsArray = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
-    console.log(postsArray);
     setAllPosts(postsArray);
   });
   return closeSocketConnection;
@@ -196,6 +195,19 @@ export const getAllUsers = async (setAllUsers) => {
   setAllUsers(allUsers);
 };
 
+export const getSearchedUsers = async (setAllUsers, searchQuery) => {
+  const usersQuery = query(
+    usersRef,
+    where("name", ">=", searchQuery),
+    where("name", "<=", searchQuery + "\uf8ff")
+  );
+  const usersArray = [];
+  const usersQuerySnapshot = await getDocs(usersQuery);
+  usersQuerySnapshot.forEach((doc) => {
+    usersArray.push(doc.data());
+  });
+  setAllUsers(usersArray);
+};
 export const uploadProfileImage = async (file, currentProfileID, setUrl) => {
   // Getting a reference of the profileImage for each user using the "currentProfileID".
   const profileImageFolderRef = ref(

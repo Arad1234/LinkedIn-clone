@@ -20,7 +20,7 @@ const ConnectionCard = (props) => {
     return () => {
       closeConnectionsSocket();
     };
-  }, []);
+  }, [currentUser]);
   // If the user is already connected, don't show him as an option.
   return isConnected ? (
     <></>

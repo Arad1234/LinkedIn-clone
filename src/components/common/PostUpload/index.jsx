@@ -27,6 +27,10 @@ const PostStatus = () => {
   const [postID, setPostID] = useState("");
   // Using the useContext hook to retrieve the current user from the 'HomeLayout' component.
   const currentUser = useContext(homeUserContext);
+  // Check if the user has profile image.
+  const profileImage = currentUser.ProfileImageUrl
+    ? currentUser.ProfileImageUrl
+    : defaultUserPhoto;
   // Create a new post - adds a new document to the 'posts' collection.
   const createPost = async () => {
     const postData = {
@@ -46,7 +50,6 @@ const PostStatus = () => {
       toast.error("Could Not Upload The Post");
     }
   };
-  console.log(currentUser);
   const updatePost = () => {
     updatePostStatus(status, postID);
     setShowModal(false);
@@ -76,18 +79,14 @@ const PostStatus = () => {
       <div className="post-status">
         <img
           className="profile-image-card"
-          src={
-            currentUser.ProfileImageUrl
-              ? currentUser.ProfileImageUrl
-              : defaultUserPhoto
-          }
+          src={profileImage}
         />
         <label className="user-name-card">{currentUser.name}</label>
       </div>
       <div className="post-status">
         <img
           className="current-user-image"
-          src={currentUser.ProfileImageUrl}
+          src={profileImage}
         />
         <button
           onClick={() => setShowModal(true)}

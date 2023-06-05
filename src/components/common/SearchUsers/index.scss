@@ -1,0 +1,17 @@
+.searchbar-container {
+  position: relative;
+  .search-users-input {
+    padding: 7px;
+    width: 20rem;
+    border-radius: 6px;
+  }
+  .search-users-input::placeholder {
+    font-size: 14px;
+  }
+  .search-users-input-clear {
+    position: absolute;
+    top: 20%;
+    right: 3%;
+    cursor: pointer;
+  }
+}

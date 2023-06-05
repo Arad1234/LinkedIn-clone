@@ -24,12 +24,11 @@ const ProfileCard = (props) => {
   const [allPosts, setAllPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [url, setUrl] = useState("");
-  // Loading state for image upload .
+  // Loading state for image upload.
   const [uploadImageLoading, setUploadImageLoading] = useState(false);
   // When the component mounts I set the loading to be true because first I want to fetch all data from DB.
   const [loading, setLoading] = useState(true);
 
-  // Setting the fileReference so when the user uploads a new image, it will replace the existing one.
   const [currentProfile, setCurrentProfile] = useState({});
 
   // Using useEffect to open the initial websocket connection with firestore.

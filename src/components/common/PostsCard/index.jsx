@@ -6,6 +6,8 @@ import { getSingleUser, getConnections } from "../../../api/FirestoreAPIs";
 import { useNavigate, useLocation } from "react-router-dom";
 import LikeButton from "../LikeButton";
 import "./index.scss";
+import defaultUserPhoto from "../../../assets/defaultUser.png";
+
 import { profileUserContext } from "../../../layouts/ProfileLayout";
 
 const PostsCard = (props) => {
@@ -19,7 +21,7 @@ const PostsCard = (props) => {
   } = props;
   const [user, setUser] = useState({});
   const location = useLocation();
-  // isConnected state is used to display only the posts of connected users.
+  // isConnected state is used to display only the
   const [isConnected, setIsConnected] = useState(false);
   const currentHomeUser = useContext(homeUserContext);
   const currentProfileUser = useContext(profileUserContext);
@@ -59,7 +61,9 @@ const PostsCard = (props) => {
             {/* Getting the profile image link for each user who upload a post. */}
             <img
               className="user-profile-image"
-              src={user.ProfileImageUrl}
+              src={
+                user.ProfileImageUrl ? user.ProfileImageUrl : defaultUserPhoto
+              }
             />
           </div>
           <div>
