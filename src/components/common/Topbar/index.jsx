@@ -104,6 +104,7 @@ const Topbar = () => {
   return (
     <nav className="topbar-main">
       <img
+        onClick={() => goToRoute("/home")}
         className="linkedin-logo"
         src={LinkedinLogo}
         alt="LinkedinLogo"
@@ -146,7 +147,9 @@ const Topbar = () => {
             return (
               <div
                 onClick={() =>
-                  goToRoute("/profile", { state: { id: user.userID } })
+                  goToRoute("/profile", {
+                    state: { id: user.userID },
+                  })
                 }
                 key={user.userID}
               >

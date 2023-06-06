@@ -23,7 +23,6 @@ const ProfileCard = (props) => {
   // With the useLocation hook I can check what profile to render according to what the user clicked.
   // Using the state object passed from the 'navigate' instance that located in 'PostsCard' folder.
   const location = useLocation();
-
   const [allUserPosts, setAllUserPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [url, setUrl] = useState("");
@@ -35,31 +34,31 @@ const ProfileCard = (props) => {
   const [loading, setLoading] = useState(true);
 
   const [currentProfile, setCurrentProfile] = useState({});
-
   // Using useEffect to open the initial websocket connection with firestore.
   useEffect(() => {
-    // Getting the posts of the user that I'm in his profile page.
-    const closePostsConnection = getSingleUserPosts(
-      setAllUserPosts,
-      location.state.id
-    );
-    const closeUserConnection = getSingleUser(
-      setCurrentProfile,
-      location.state.id
-    );
-    return () => {
-      // Closing sockets connections.
-      closeUserConnection();
-      closePostsConnection();
-    };
-  }, []);
+    // When the user entered someone's profile, I need to show the Loader until all data has been fetched.
+    setLoading(true);
+    // Check if the the "id" was passed with the useNavigate hook to this "/profile" route.
+    if (Object.keys(currentUser).length > 0) {
+      const userID = location.state ? location.state.id : currentUser.userID;
+
+      // Getting the posts of the user that I'm in his profile page.
+      const closePostsConnection = getSingleUserPosts(setAllUserPosts, userID);
+      const closeUserConnection = getSingleUser(setCurrentProfile, userID);
+      return () => {
+        // Closing sockets connections.
+        closeUserConnection();
+        closePostsConnection();
+      };
+    }
+  }, [currentUser, location.state.id]);
 
   useEffect(() => {
     if (Object.keys(currentProfile).length > 0) {
       // After I fetched all the data, I can set the loading to false.
       getProfileImage(currentProfile.id, setUrl).then(() => setLoading(false));
     }
-  }, [currentProfile]);
+  }, [currentProfile, location.state.id]);
 
   const handleFileSelected = async (event) => {
     const file = event.target.files[0];
@@ -127,9 +126,13 @@ const ProfileCard = (props) => {
               </p>
             </div>
             <div className="right-info">
-              <p className="college">{currentProfile.college}</p>
+              <p className="college">
+                {currentProfile.college && currentProfile.college.trim()
+                  ? `College: ${currentProfile.college}`
+                  : null}
+              </p>
               <p className="company">
-                {currentProfile.company
+                {currentProfile.company && currentProfile.company.trim()
                   ? `Company: ${currentProfile.company}`
                   : null}
               </p>

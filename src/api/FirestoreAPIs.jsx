@@ -238,12 +238,14 @@ export const uploadProfileImage = async (file, currentProfileID, setUrl) => {
 };
 
 export const getProfileImage = async (currentProfileID, setUrl) => {
-  // Every time the component mounts this function will be called.
-  const currentProfileRef = doc(usersRef, currentProfileID);
-  const userSnapShot = await getDoc(currentProfileRef);
-  const docData = userSnapShot.data();
-  if (docData.ProfileImageUrl) {
-    setUrl(docData.ProfileImageUrl);
+  try {
+    // Every time the component mounts this function will be called.
+    const currentProfileRef = doc(usersRef, currentProfileID);
+    const userSnapShot = await getDoc(currentProfileRef);
+    const docData = userSnapShot.data();
+    docData.ProfileImageUrl ? setUrl(docData.ProfileImageUrl) : setUrl("");
+  } catch (error) {
+    console.log(error);
   }
 };
 
