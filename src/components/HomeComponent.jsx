@@ -1,9 +1,9 @@
 import React from "react";
-import PostStatus from "./common/PostUpload";
+import AllPosts from "./common/AllPosts";
 const HomeComponent = () => {
   return (
     <div>
-      <PostStatus />
+      <AllPosts />
     </div>
   );
 };

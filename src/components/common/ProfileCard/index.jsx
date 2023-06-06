@@ -16,16 +16,21 @@ import ProfileImage from "./ProfileImage";
 
 const ProfileCard = (props) => {
   const { onEdit } = props;
+
   // I'm getting the currentUser to check if I clicked the current user's post or another user's post.
   const currentUser = useContext(profileUserContext);
+
   // With the useLocation hook I can check what profile to render according to what the user clicked.
   // Using the state object passed from the 'navigate' instance that located in 'PostsCard' folder.
   const location = useLocation();
-  const [allPosts, setAllPosts] = useState([]);
+
+  const [allUserPosts, setAllUserPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [url, setUrl] = useState("");
+
   // Loading state for image upload.
   const [uploadImageLoading, setUploadImageLoading] = useState(false);
+
   // When the component mounts I set the loading to be true because first I want to fetch all data from DB.
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +40,7 @@ const ProfileCard = (props) => {
   useEffect(() => {
     // Getting the posts of the user that I'm in his profile page.
     const closePostsConnection = getSingleUserPosts(
-      setAllPosts,
+      setAllUserPosts,
       location.state.id
     );
     const closeUserConnection = getSingleUser(
@@ -137,9 +142,9 @@ const ProfileCard = (props) => {
         </div>
       </div>
 
-      {/* using 'post-status-main' className from index.scss that located in PostUpload folder */}
+      {/* using 'post-status-main' className from index.scss that located in AllPosts folder */}
       <div className="post-status-main">
-        {allPosts.map((post) => {
+        {allUserPosts.map((post) => {
           return (
             <div key={post.postID}>
               <PostsCard post={post} />

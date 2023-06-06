@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "antd";
 
-const DeleteModal = (props) => {
+const DeletePostModal = (props) => {
   const { setShowDeleteModal, showDeleteModal, handleDeletePost, postID } =
     props;
   return (
@@ -15,4 +15,4 @@ const DeleteModal = (props) => {
   );
 };
 
-export default DeleteModal;
+export default DeletePostModal;

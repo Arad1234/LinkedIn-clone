@@ -7,6 +7,8 @@ const SearchUsers = (props) => {
     showSearchBar,
     setSearchInputValue,
     searchInputValue,
+    handleFocus,
+    handleBlur,
   } = props;
   const inputRef = useRef(null);
   const handleInputChange = (e) => {
@@ -49,6 +51,8 @@ const SearchUsers = (props) => {
         onChange={handleInputChange}
         value={searchInputValue}
         ref={inputRef}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         placeholder="Search"
         className="search-users-input"
       />

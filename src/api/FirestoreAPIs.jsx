@@ -33,13 +33,23 @@ export const postStatus = (postData) => {
 
 // Deleting post.
 export const deletePost = async (postID) => {
-  const postRef = doc(postsRef, postID);
-  await deleteDoc(postRef);
+  try {
+    const postRef = doc(postsRef, postID);
+    await deleteDoc(postRef);
+    toast.success("Post has been deleted successfully");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const updatePostStatus = async (status, postID) => {
-  const postRef = doc(postsRef, postID);
-  await updateDoc(postRef, { status: status });
+  try {
+    const postRef = doc(postsRef, postID);
+    await updateDoc(postRef, { status: status });
+    toast.success("Post has been updated successfully");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // Retrieving data from firestore "posts" collection.
@@ -62,13 +72,13 @@ export const getPosts = (setAllPosts, setLoading) => {
 };
 
 // Getting all the posts for a specific user in order to see his posts in his profile page.
-export const getSingleUserPosts = (setAllPosts, id) => {
+export const getSingleUserPosts = (setAllUserPosts, id) => {
   const getPostsQuery = query(postsRef, where("userID", "==", id)); // Getting all the posts that their 'userEmail' is equal to the post's 'userEmail' that the user has pressed.
   const closeSocketConnection = onSnapshot(getPostsQuery, (res) => {
     const postsArray = res.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
-    setAllPosts(postsArray);
+    setAllUserPosts(postsArray);
   });
   return closeSocketConnection;
 };

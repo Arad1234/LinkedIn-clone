@@ -22,8 +22,8 @@ const Topbar = () => {
   const [isPageLong, setIsPageLong] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  const [isInputFocus, setIsInputFocus] = useState(false);
   useEffect(() => {
     // Check the width of the page to render the search bar.
     const handleResize = () => {
@@ -54,6 +54,17 @@ const Topbar = () => {
   const goToRoute = (route, optionalData) => {
     navigate(route, optionalData);
   };
+  // Only if the input is focuesed I will show all the users as search results.
+  const handleFocus = () => {
+    setIsInputFocus(true);
+  };
+  const handleBlur = () => {
+    // Wait to first press the user and then set the input focus state to false.
+    setTimeout(() => {
+      setIsInputFocus(false);
+    }, 100);
+  };
+
   // Variable for all the icons so I will not repeat the JSX code.
   const allIconsHTML = (
     <>
@@ -87,6 +98,8 @@ const Topbar = () => {
     showSearchBar,
     setSearchInputValue,
     searchInputValue,
+    handleFocus,
+    handleBlur,
   };
   return (
     <nav className="topbar-main">
@@ -127,7 +140,7 @@ const Topbar = () => {
           </div>
         ) : null}
       </div>
-      {showSearchBar && (
+      {isInputFocus && (
         <div className="search-results">
           {allUsers.map((user) => {
             return (

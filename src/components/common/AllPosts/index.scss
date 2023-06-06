@@ -28,6 +28,10 @@
       margin-top: 3rem;
       font-weight: 600;
       font-family: system-ui;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     .current-user-image {
       width: 50px;

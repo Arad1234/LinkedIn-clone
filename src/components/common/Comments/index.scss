@@ -25,6 +25,6 @@
   .timestamp {
     position: absolute; // the .comment-container element becomes the closest positioned ancestor for the .timestamp element. this is because he is with position: relative.
     right: 10px;
-    top: 5px;
+    top: -11px;
   }
 }

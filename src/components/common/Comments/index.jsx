@@ -6,7 +6,6 @@ const Comments = (props) => {
     <div className="comment-container">
       <p className="comment-username">{commentObj.userName}</p>
       <p className="comment">{commentObj.comment}</p>
-      {/* <p>•</p> */}
       <p className="timestamp">{commentObj.timeStamp}</p>
     </div>
   );
