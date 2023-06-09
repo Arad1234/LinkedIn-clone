@@ -78,10 +78,10 @@ const LoginComponent = () => {
           onClick={googleSingIn}
         />
         <p className="go-to-signup">
-          New to LinkedIn?{" "}
+          New to LinkedIn?
           <span
             className="join-now"
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/")}
           >
             Join now
           </span>
