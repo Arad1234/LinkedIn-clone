@@ -42,4 +42,4 @@ npm install
 npm run dev
 ```
 
-5. Open the app in a web browser at http://localhost:3000/register.
+5. Open the app in a web browser at http://localhost:5173.
