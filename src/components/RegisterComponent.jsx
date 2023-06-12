@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RegisterAPI, GoogleSingInAPI } from "../api/AuthAPIs";
+import { RegisterAPI } from "../api/AuthAPIs";
 import { postUserData } from "../api/FirestoreAPIs";
 import linkedinLogo from "../assets/linkedinLogo.png";
 import GoogleButton from "react-google-button";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "../Sass/LoginComponent.scss";
 import { toast } from "react-toastify";
 import { getUniqueID } from "../helpers/getUniqueID";
+import { googleSingIn } from "../helpers/googleSingIn";
 
 const RegisterComponent = () => {
   // Using the "navigate" object instead of the "history" object to navigate between different URLs.
@@ -30,17 +31,6 @@ const RegisterComponent = () => {
       toast.error("Cannot Create your Account");
     }
   };
-  const googleSingIn = async () => {
-    try {
-      // Because the 'GoogleSingInAPI is a promise, we assing the 'await' keyword before it.
-      let res = await GoogleSingInAPI();
-      toast.success("Signed In With Google!");
-      navigate("/home");
-    } catch (error) {
-      toast.error("Problem with google authentication");
-    }
-  };
-
   return (
     <div className="login-wrapper">
       <img
@@ -91,7 +81,7 @@ const RegisterComponent = () => {
       <div className="google-btn-container">
         <GoogleButton
           className="google-btn"
-          onClick={googleSingIn}
+          onClick={() => googleSingIn().then(() => navigate("/home"))}
         />
         <p className="go-to-signup">
           Already on LinkedIn?{" "}

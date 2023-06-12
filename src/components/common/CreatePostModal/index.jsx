@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button } from "antd";
 
 import "./index.scss";
-const ModalComponent = (props) => {
+const CreatePostModal = (props) => {
   const {
     setStatus,
     status,
@@ -25,7 +25,7 @@ const ModalComponent = (props) => {
             onClick={createPost} // Calling the function at the parent component
             key="submit"
             type="primary"
-            disabled={!status.length} // If there is a text, the "disabled" property is set to false.
+            disabled={!status.trim().length} // If there is a text, the "disabled" property is set to false.
           >
             Post
           </Button>,
@@ -42,4 +42,4 @@ const ModalComponent = (props) => {
   );
 };
 
-export default ModalComponent;
+export default CreatePostModal;

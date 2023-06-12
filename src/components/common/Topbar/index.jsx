@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./index.scss";
 import ProfilePopup from "../ProfilePopup";
 import LinkedinLogo from "../../../assets/linkedinLogo.png";
@@ -18,6 +18,7 @@ import SearchResults from "./SearchResults";
 
 const Topbar = () => {
   const navigate = useNavigate();
+  const inputRef = useRef(null);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [isPageLong, setIsPageLong] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
@@ -44,25 +45,31 @@ const Topbar = () => {
     // This setTimeout function will be created right after the previous one has been cleared.
     const debouncing = setTimeout(() => {
       getSearchedUsers(setAllUsers, searchInputValue);
-    }, 300);
+    }, 200);
     return () => {
       // This function will cancel the previos setTimeout from the js runtime.
       clearTimeout(debouncing);
     };
   }, [searchInputValue]);
 
+  useEffect(() => {
+    if (showSearchBar) {
+      inputRef.current.focus();
+    }
+  }, [showSearchBar]);
+
   const goToRoute = (route, optionalData) => {
     navigate(route, optionalData);
   };
+
   // Only if the input is focuesed I will show all the users as search results.
   const handleFocus = () => {
     setIsInputFocus(true);
   };
   const handleBlur = () => {
-    // Wait to first press the user and then set the input focus state to false.
-    setTimeout(() => {
-      setIsInputFocus(false);
-    }, 100);
+    setIsInputFocus(false);
+    setShowSearchBar(false);
+    setSearchInputValue("");
   };
 
   // Variable for all the icons so I will not repeat the JSX code.
@@ -94,8 +101,7 @@ const Topbar = () => {
   );
   // Gloabal props for the searchUsers component.
   const searchUsersProps = {
-    setShowSearchBar,
-    showSearchBar,
+    inputRef,
     setSearchInputValue,
     searchInputValue,
     handleFocus,
@@ -153,7 +159,10 @@ const Topbar = () => {
                 }
                 key={user.userID}
               >
-                <SearchResults user={user} />
+                <SearchResults
+                  user={user}
+                  handleBlur={handleBlur}
+                />
               </div>
             );
           })}

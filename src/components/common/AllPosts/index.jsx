@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import ModalComponent from "../ModalComponent";
+import CreatePostModal from "../CreatePostModal";
 import { toast } from "react-toastify";
 import PostsCard from "../PostsCard";
 import { homeUserContext } from "../../../layouts/HomeLayout";
@@ -83,7 +83,7 @@ const AllPosts = () => {
           Start a post
         </button>
       </div>
-      <ModalComponent
+      <CreatePostModal
         setStatus={setStatus}
         status={status}
         showCreatePostModal={showCreatePostModal}

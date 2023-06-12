@@ -1,16 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import "./index.scss";
 const SearchUsers = (props) => {
   const {
-    setShowSearchBar,
-    showSearchBar,
+    inputRef,
     setSearchInputValue,
     searchInputValue,
     handleFocus,
     handleBlur,
   } = props;
-  const inputRef = useRef(null);
   const handleInputChange = (e) => {
     setSearchInputValue(e.target.value);
   };
@@ -19,29 +17,22 @@ const SearchUsers = (props) => {
   };
 
   useEffect(() => {
-    // When the user clicks outside of the search input, the search input will be unvisible.
+    // When the user clicks outside of the search input element, it will unvisible the search input and search results.
     const handleClickOutside = (event) => {
       // If the user has clicked the SVG element - the X icon, the input should not be unvisible.
       const isSVGElement = event.target instanceof SVGElement;
 
-      if (
-        inputRef.current &&
-        !inputRef.current.contains(event.target) &&
-        !isSVGElement
-      ) {
-        setShowSearchBar(false);
-        setSearchInputValue("");
+      if (event.target !== inputRef.current && !isSVGElement) {
+        // Using setTimeout because if the user pressed someone in the search result, I need to wait.
+        setTimeout(() => {
+          handleBlur();
+        }, 100);
       }
     };
-    if (showSearchBar) {
-      // Using setTimeout to add the click event listener only when the search bar is visible and the component has been rendered.
-      setTimeout(() => {
-        document.addEventListener("click", handleClickOutside);
-      }, 0);
-    }
 
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -52,7 +43,6 @@ const SearchUsers = (props) => {
         value={searchInputValue}
         ref={inputRef}
         onFocus={handleFocus}
-        onBlur={handleBlur}
         placeholder="Search"
         className="search-users-input"
       />

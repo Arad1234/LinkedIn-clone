@@ -1,4 +1,4 @@
-//// That API file handle the requests for both the 'users' and 'posts' collections.
+//// That API file handle the requests for all the collections in the firestore DB.
 import { firestore, storage } from "../firebaseConfig";
 import { toast } from "react-toastify";
 import {
@@ -16,6 +16,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getUniqueID } from "../helpers/getUniqueID";
 
 // Creates a reference to a specific collection in the DB.
 // If the collection does not exists, when I first insert a document, it will be created automatically.
@@ -42,6 +43,7 @@ export const deletePost = async (postID) => {
   }
 };
 
+// Updating the post's text (status).
 export const updatePostStatus = async (status, postID) => {
   try {
     const postRef = doc(postsRef, postID);
@@ -96,12 +98,31 @@ export const getSingleUser = (setCurrentProfile, id) => {
 
   return closeSocketConnection;
 };
+
 // Adding new user to the 'users' collection.
 export const postUserData = (userDataObject) => {
-  addDoc(usersRef, userDataObject)
-    .then(() => {})
-    .catch((err) => {
-      console.log(err);
+  addDoc(usersRef, userDataObject).catch((err) => {
+    console.log(err);
+  });
+};
+
+// This function is for users who sign in with google.
+export const checkUserExists = (userInfo) => {
+  const q = query(usersRef, where("email", "==", userInfo.email));
+  getDocs(q)
+    .then((querySnapshot) => {
+      // If there is no such user in the users collection, create new one.
+      if (querySnapshot.docs.length === 0) {
+        // Calling the function API that creates new user.
+        postUserData({
+          name: userInfo.displayName,
+          email: userInfo.email,
+          userID: getUniqueID(),
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };
 
@@ -109,7 +130,7 @@ export const postUserData = (userDataObject) => {
 export const getCurrentUser = (setCurrentUser) => {
   // I retrieve all the users from the "users" collection and filter them until I find the current user.
   // The proccess using a combination of "map" and "filter" functions returns an array with 1 item so I retrieve the item at index 0.
-  const closeSocketConnection = onSnapshot(usersRef, (res) => {
+  const closeSocketConnection = onSnapshot(usersRef, async (res) => {
     const currentUser = res.docs
       .map((doc) => {
         // Here I add the auto generated 'id' that firebase provides.
@@ -218,6 +239,7 @@ export const getSearchedUsers = async (setAllUsers, searchQuery) => {
   });
   setAllUsers(usersArray);
 };
+
 export const uploadProfileImage = async (file, currentProfileID, setUrl) => {
   // Getting a reference of the profileImage for each user using the "currentProfileID".
   const profileImageFolderRef = ref(
@@ -251,16 +273,21 @@ export const getProfileImage = async (currentProfileID, setUrl) => {
 
 // currentUserID is the current user that logged to the app, userConnectionID is the user to add to the connections of the current user.
 export const addConnection = async (currentUserID, userConnectionID) => {
-  const connectionToAddRef = doc(
-    connectionsRef,
-    `${currentUserID}_${userConnectionID}`
-  );
-  await setDoc(connectionToAddRef, { currentUserID, userConnectionID });
-  toast.success("Connection Added!");
+  try {
+    const connectionToAddRef = doc(
+      connectionsRef,
+      `${currentUserID}_${userConnectionID}`
+    );
+    await setDoc(connectionToAddRef, { currentUserID, userConnectionID });
+    toast.success("Connection Added!");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // Getting all the connections of the current user.
 export const getConnections = (userID, userWhoUploadPostID, setIsConnected) => {
+  console.log(userID);
   try {
     const connectedQuery = query(
       connectionsRef,

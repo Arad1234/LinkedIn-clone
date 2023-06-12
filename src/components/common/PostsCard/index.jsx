@@ -43,8 +43,10 @@ const PostsCard = (props) => {
   }, []);
   useEffect(() => {
     // Here I get the connections of the current user and set the "isConnected" boolean accrodingly.
-    getConnections(currentUser.userID, post.userID, setIsConnected);
-  }, []);
+    if (currentUser) {
+      getConnections(currentUser.userID, post.userID, setIsConnected);
+    }
+  }, [currentUser]);
 
   // Opening modal and inserting the post status to the state.
   const handleEditClick = () => {

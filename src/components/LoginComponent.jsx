@@ -5,6 +5,7 @@ import GoogleButton from "react-google-button";
 import { useNavigate } from "react-router-dom";
 import "../Sass/LoginComponent.scss";
 import { toast } from "react-toastify";
+import { googleSingIn } from "../helpers/googleSingIn";
 
 const LoginComponent = () => {
   // Using the "navigate" object instead of the "history" object to navigate between different URLs.
@@ -20,16 +21,6 @@ const LoginComponent = () => {
       navigate("/home");
     } catch (error) {
       toast.error("Please Check your Credentials");
-    }
-  };
-  const googleSingIn = async () => {
-    try {
-      // Because the 'GoogleSingInAPI()' is a promise, we assing the 'await' keyword before it.
-      const res = await GoogleSingInAPI();
-      toast.success("Signed In With Google!");
-      navigate("/home");
-    } catch (error) {
-      toast.error("Problem with google authentication");
     }
   };
   return (
@@ -75,10 +66,10 @@ const LoginComponent = () => {
       <div className="google-btn-container">
         <GoogleButton
           className="google-btn"
-          onClick={googleSingIn}
+          onClick={() => googleSingIn().then(() => navigate("/home"))}
         />
         <p className="go-to-signup">
-          New to LinkedIn?
+          New to LinkedIn?{" "}
           <span
             className="join-now"
             onClick={() => navigate("/")}
